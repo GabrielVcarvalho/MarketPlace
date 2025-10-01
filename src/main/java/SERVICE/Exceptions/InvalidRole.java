@@ -1,4 +1,4 @@
-package SERVICE;
+package SERVICE.Exceptions;
 
 public class InvalidRole extends RuntimeException {
     public InvalidRole() {

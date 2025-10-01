@@ -1,4 +1,4 @@
-package SERVICE;
+package SERVICE.Exceptions;
 
 public class EmptyPassword extends RuntimeException {
     public EmptyPassword() {

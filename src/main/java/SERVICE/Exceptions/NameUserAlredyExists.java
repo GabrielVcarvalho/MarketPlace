@@ -1,4 +1,4 @@
-package SERVICE;
+package SERVICE.Exceptions;
 
 public class NameUserAlredyExists extends RuntimeException {
     public NameUserAlredyExists() {

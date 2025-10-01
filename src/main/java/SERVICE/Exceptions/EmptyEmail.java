@@ -1,4 +1,4 @@
-package SERVICE;
+package SERVICE.Exceptions;
 
 public class EmptyEmail extends RuntimeException {
     public EmptyEmail() {
