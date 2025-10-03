@@ -1,0 +1,7 @@
+package SERVICE.Exceptions;
+
+public class NameUserNotExists extends RuntimeException {
+    public NameUserNotExists() {
+        super("O usuário informado não existe");
+    }
+}
