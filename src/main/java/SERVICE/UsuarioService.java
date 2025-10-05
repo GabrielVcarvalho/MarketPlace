@@ -5,46 +5,105 @@ import MODEL.UsuarioEntity;
 import SERVICE.Exceptions.*;
 
 public class UsuarioService {
-
     public static class Registro{
-        public static void registrar(UsuarioEntity usuario){
-            QueryTemplate.Usuario.createUsuario(usuario);
+        private String nome;
+        private String email;
+        private String senha;
+        private String role;
+
+        public String getNome() {
+            return nome;
         }
 
-        public static void verificarRegistroUsuario(UsuarioEntity usuario){
-            verificarCamposVazios(usuario.getNome(),
-                    usuario.getEmail(),
-                    usuario.getSenha());
-            if (!isValidRole(usuario.getRole())) throw new InvalidRole();
-            if (nameUserAlredyExist(usuario.getNome())) throw new NameUserAlredyExists();
-            if (emailUserAlredyExist(usuario.getEmail())) throw new EmailUserAlredyUsed();
+        public void setNome(String nome) {
+            this.nome = nome;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getSenha() {
+            return senha;
+        }
+
+        public void setSenha(String senha) {
+            this.senha = senha;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
+
+        public void registrar(){
+            QueryTemplate.Usuario.createUsuario(new UsuarioEntity(nome,
+                    email, senha, role));
+        }
+
+        public void verificarRegistroUsuario(){
+            verificarCamposVazios(nome, email, senha);
+            if (!isValidRole(role)) throw new InvalidRole();
+            if (nameUserAlredyExist(nome)) throw new NameUserAlredyExists();
+            if (emailUserAlredyExist(email)) throw new EmailUserAlredyUsed();
         }
     }
 
     public static class Login{
-        public static String login(UsuarioEntity usuario){
-            verificarLoginUsuario(usuario);
-            return Token.gerarTokenDeUsuario(usuario);
+        private String nome;
+        private String email;
+        private String senha;
+        private String role;
+
+        public String getNome() {
+            return nome;
         }
 
-        private static void verificarLoginUsuario(UsuarioEntity usuario){
-            verificarCamposVazios(usuario.getNome(),
-                    usuario.getEmail(),
-                    usuario.getSenha());
-            if (!nameUserAlredyExist(usuario.getNome())) throw new NameUserNotExists();
-            if (!emailUserAlredyExist(usuario.getEmail())) throw new EmailNotInUse();
-            if (!isCorrectPassword(usuario.getSenha(), usuario.getNome())) throw new WrongPassword();
+        public String getEmail() {
+            return email;
         }
 
-        private static boolean isCorrectPassword(String senha, String email){
-            return QueryTemplate.Usuario.readUsuarioByEmail(email).getSenha().equals(senha);
+        public String getSenha() {
+            return senha;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public Login(){
+
+        }
+
+        public String login(){
+            return Token.gerarTokenDeUsuario(nome, email, role);
+        }
+
+        public boolean verificarLoginUsuario(){
+            verificarCamposVazios(nome, email, senha);
+            if (!nameUserAlredyExist(nome)) throw new NameUserNotExists();
+            if (!emailUserAlredyExist(email)) throw new EmailNotInUse();
+            if (!isCorrectPassword()) throw new WrongPassword();
+            return true;
+        }
+
+        private boolean isCorrectPassword(){
+            return QueryTemplate.Usuario.readUsuarioByName(nome).getSenha().equals(senha);
         }
     }
 
-    private static void verificarCamposVazios(String nome,String email, String senha){
+    private static boolean verificarCamposVazios(String nome,String email, String senha){
         if (nome == null || nome.isEmpty()) throw new EmptyName();
         if (email == null || email.isEmpty()) throw new EmptyEmail();
         if (senha == null || senha.isEmpty()) throw new EmptyPassword();
+        return true;
     }
 
     private static boolean nameUserAlredyExist(String nome){
@@ -57,8 +116,8 @@ public class UsuarioService {
 
     private static boolean isValidRole(String role){
         if(role != null){
-            String roleToUpper = role.toUpperCase();
-            return roleToUpper.equals("CLIENTE") || roleToUpper.equals("VENDEDOR");
+            return role.equalsIgnoreCase("cliente")
+                    || role.equalsIgnoreCase("vendedor");
         }else return false;
     }
 }

@@ -1,21 +1,36 @@
 package CONTROLLER;
 
-import MODEL.UsuarioEntity;
 import SERVICE.UsuarioService;
+import SERVICE.UsuarioService.*;
 import io.javalin.Javalin;
+
+import java.util.Map;
 
 public class ApiController {
     public ApiController(){
         Javalin api = Javalin.create();
         api.start(8080);
-        api.before("/users/register", context -> {
-            UsuarioEntity usuario = context.bodyAsClass(UsuarioEntity.class);
-            UsuarioService.Registro.verificarRegistroUsuario(usuario);
+
+        api.before("/register", context -> {
+            UsuarioService.Registro registro = context.bodyAsClass(Registro.class);
+            registro.verificarRegistroUsuario();
+            context.attribute("registro", registro);
         });
 
-        api.post("/users/register", context -> {
-            UsuarioEntity usuario = context.bodyAsClass(UsuarioEntity.class);
-            UsuarioService.Registro.registrar(usuario);
+        api.post("/register", context -> {
+            UsuarioService.Registro registro = context.attribute("registro");
+            registro.registrar();
+        });
+
+        api.before("/login", context -> {
+            UsuarioService.Login login = context.bodyAsClass(Login.class);
+            login.verificarLoginUsuario();
+            context.attribute("login", login);
+        });
+
+        api.post("/login", context -> {
+            UsuarioService.Login login = context.attribute("login");
+            context.json(Map.of(login.login(), "token"));
         });
     }
 }
