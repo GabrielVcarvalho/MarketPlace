@@ -3,7 +3,6 @@ package CONTROLLER;
 import SERVICE.UsuarioService;
 import SERVICE.UsuarioService.*;
 import io.javalin.Javalin;
-
 import java.util.Map;
 
 public class ApiController {
@@ -34,8 +33,11 @@ public class ApiController {
         });
 
         api.before("/usuario/*", context -> {
+            Map<String, Object> json = context.bodyAsClass(Map.class);
+            String tokenString = (String) json.get(("token"));
+
             UsuarioService.Token token = new Token();
-            token.decodeToken(context.body());
+            token.decodeToken(tokenString);
         });
     }
 }
