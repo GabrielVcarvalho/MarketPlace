@@ -3,6 +3,13 @@ package SERVICE;
 import DAO.QueryTemplate;
 import MODEL.UsuarioEntity;
 import SERVICE.Exceptions.*;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+
+import java.util.HashMap;
 
 public class UsuarioService {
     public static class Registro{
@@ -83,7 +90,7 @@ public class UsuarioService {
         }
 
         public String login(){
-            return Token.gerarTokenDeUsuario(nome, email, role);
+            return new Token("Vitor").createToken(nome, email, role);
         }
 
         public boolean verificarLoginUsuario(){
@@ -96,6 +103,53 @@ public class UsuarioService {
 
         private boolean isCorrectPassword(){
             return QueryTemplate.Usuario.readUsuarioByName(nome).getSenha().equals(senha);
+        }
+    }
+
+    public static class Token {
+        private static final Algorithm algorithm = Algorithm.HMAC256("password");
+        private String issuer;
+
+        public Algorithm getAlgorithm() {
+            return algorithm;
+        }
+
+        public String getIssuer() {
+            return issuer;
+        }
+
+        public Token(String issuer) {
+            this.issuer = issuer;
+        }
+
+        public Token() {
+
+        }
+
+        public String createToken(String nome, String email, String role){
+            String token = JWT.create()
+                    .withIssuer(issuer)
+                    .withClaim("nome", nome)
+                    .withClaim("email", email)
+                    .withClaim("role", role)
+                    .sign(algorithm);
+            return token;
+        }
+
+        public HashMap<String, String> decodeToken(String token){
+            HashMap<String, String> camposUsuario = new HashMap<>();
+
+            try{
+                JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer(issuer).build();
+                DecodedJWT jwt = jwtVerifier.verify(token);
+                camposUsuario.put("nome", jwt.getClaim("nome").asString());
+                camposUsuario.put("email", jwt.getClaim("email").asString());
+                camposUsuario.put("role", jwt.getClaim("role").asString());
+                return  camposUsuario;
+            }catch (JWTVerificationException e){
+                System.err.println(e.getMessage());
+                return null;
+            }
         }
     }
 

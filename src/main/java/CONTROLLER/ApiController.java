@@ -32,5 +32,10 @@ public class ApiController {
             UsuarioService.Login login = context.attribute("login");
             context.json(Map.of(login.login(), "token"));
         });
+
+        api.before("/usuario/*", context -> {
+            UsuarioService.Token token = new Token();
+            token.decodeToken(context.body());
+        });
     }
 }
