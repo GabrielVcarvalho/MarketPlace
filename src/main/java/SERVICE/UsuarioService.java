@@ -56,10 +56,10 @@ public class UsuarioService {
         }
 
         public void verificarRegistroUsuario(){
-            verificarCamposVazios(nome, email, senha);
-            if (!isValidRole(role)) throw new InvalidRole();
-            if (nameUserAlredyExist(nome)) throw new NameUserAlredyExists();
-            if (emailUserAlredyExist(email)) throw new EmailUserAlredyUsed();
+            verificacaoUtils.verificarCamposVazios(nome, email, senha);
+            if (!verificacaoUtils.isValidRole(role)) throw new InvalidRole();
+            if (verificacaoUtils.nameUserAlredyExist(nome)) throw new NameUserAlredyExists();
+            if (verificacaoUtils.emailUserAlredyExist(email)) throw new EmailUserAlredyUsed();
         }
     }
 
@@ -94,9 +94,9 @@ public class UsuarioService {
         }
 
         public boolean verificarLoginUsuario(){
-            verificarCamposVazios(nome, email, senha);
-            if (!nameUserAlredyExist(nome)) throw new NameUserNotExists();
-            if (!emailUserAlredyExist(email)) throw new EmailNotInUse();
+            verificacaoUtils.verificarCamposVazios(nome, email, senha);
+            if (!verificacaoUtils.nameUserAlredyExist(nome)) throw new NameUserNotExists();
+            if (!verificacaoUtils.emailUserAlredyExist(email)) throw new EmailNotInUse();
             if (!isCorrectPassword()) throw new WrongPassword();
             return true;
         }
@@ -153,25 +153,27 @@ public class UsuarioService {
         }
     }
 
-    private static boolean verificarCamposVazios(String nome,String email, String senha){
-        if (nome == null || nome.isEmpty()) throw new EmptyName();
-        if (email == null || email.isEmpty()) throw new EmptyEmail();
-        if (senha == null || senha.isEmpty()) throw new EmptyPassword();
-        return true;
-    }
+    private static class verificacaoUtils{
+        private static boolean verificarCamposVazios(String nome,String email, String senha){
+            if (nome == null || nome.isEmpty()) throw new EmptyName();
+            if (email == null || email.isEmpty()) throw new EmptyEmail();
+            if (senha == null || senha.isEmpty()) throw new EmptyPassword();
+            return true;
+        }
 
-    private static boolean nameUserAlredyExist(String nome){
-        return QueryTemplate.Usuario.readUsuarioByName(nome) != null;
-    }
+        private static boolean nameUserAlredyExist(String nome){
+            return QueryTemplate.Usuario.readUsuarioByName(nome) != null;
+        }
 
-    private static boolean emailUserAlredyExist(String email){
-        return QueryTemplate.Usuario.readUsuarioByEmail(email) != null;
-    }
+        private static boolean emailUserAlredyExist(String email){
+            return QueryTemplate.Usuario.readUsuarioByEmail(email) != null;
+        }
 
-    private static boolean isValidRole(String role){
-        if(role != null){
-            return role.equalsIgnoreCase("cliente")
-                    || role.equalsIgnoreCase("vendedor");
-        }else return false;
+        private static boolean isValidRole(String role){
+            if(role != null){
+                return role.equalsIgnoreCase("cliente")
+                        || role.equalsIgnoreCase("vendedor");
+            }else return false;
+        }
     }
 }
