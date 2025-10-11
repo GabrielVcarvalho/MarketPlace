@@ -2,9 +2,9 @@ package SERVICE;
 
 import DAO.QueryTemplate;
 import MODEL.UsuarioEntity;
-import SERVICE.Exceptions.EmailUserAlredyUsed;
+import SERVICE.Exceptions.EmailUserAlreadyUsed;
 import SERVICE.Exceptions.InvalidRole;
-import SERVICE.Exceptions.NameUserAlredyExists;
+import SERVICE.Exceptions.NameUserAlreadyExists;
 
 public class RegistroService {
     private String nome;
@@ -52,7 +52,7 @@ public class RegistroService {
     public void verificarRegistroUsuario(){
         VerificacaoUtils.verificarCamposVazios(nome, email, senha);
         if (!VerificacaoUtils.isValidRole(role)) throw new InvalidRole();
-        if (VerificacaoUtils.nameUserAlredyExist(nome)) throw new NameUserAlredyExists();
-        if (VerificacaoUtils.emailUserAlredyExist(email)) throw new EmailUserAlredyUsed();
+        if (VerificacaoUtils.nameUserAlredyExist(nome)) throw new NameUserAlreadyExists();
+        if (VerificacaoUtils.emailUserAlredyExist(email)) throw new EmailUserAlreadyUsed();
     }
 }

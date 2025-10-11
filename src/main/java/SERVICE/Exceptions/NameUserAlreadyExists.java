@@ -1,7 +1,7 @@
 package SERVICE.Exceptions;
 
-public class NameUserAlredyExists extends RuntimeException {
-    public NameUserAlredyExists() {
+public class NameUserAlreadyExists extends RuntimeException {
+    public NameUserAlreadyExists() {
         super("O nome de usuário informado já está em uso");
     }
 }
