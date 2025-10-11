@@ -110,23 +110,15 @@ public class UsuarioService {
         private static final Algorithm algorithm = Algorithm.HMAC256("password");
         private String issuer;
 
-        public Algorithm getAlgorithm() {
-            return algorithm;
-        }
-
-        public String getIssuer() {
-            return issuer;
-        }
-
         public Token(String issuer) {
             this.issuer = issuer;
         }
-
         public Token() {
 
         }
 
         public String createToken(String nome, String email, String role){
+            verificacaoUtils.verificarCamposVazios(nome, email, role);
             String token = JWT.create()
                     .withIssuer(issuer)
                     .withClaim("nome", nome)
@@ -150,6 +142,20 @@ public class UsuarioService {
                 System.err.println(e.getMessage());
                 return null;
             }
+        }
+
+        public void verificarUsuarioByToken(HashMap<String, String> jwtDecodificado){
+            UsuarioEntity usuario;
+            String nome = jwtDecodificado.get("nome");
+            String email = jwtDecodificado.get("email");
+            String role = jwtDecodificado.get("role");
+
+            verificacaoUtils.verificarCamposVazios(nome, email, role);
+            usuario = QueryTemplate.Usuario.readUsuarioByName(nome);
+            if(usuario == null) throw new NameUserNotExists();
+            if(!usuario.getNome().equalsIgnoreCase(nome)
+                    || !usuario.getEmail().equalsIgnoreCase(email)
+                    || !usuario.getRole().equalsIgnoreCase(role)) throw new InvalidUserToken();
         }
     }
 

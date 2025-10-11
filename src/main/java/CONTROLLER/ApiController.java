@@ -37,7 +37,7 @@ public class ApiController {
             String tokenString = (String) json.get(("token"));
 
             UsuarioService.Token token = new Token();
-            token.decodeToken(tokenString);
+            token.verificarUsuarioByToken(token.decodeToken(tokenString));
         });
     }
 }
