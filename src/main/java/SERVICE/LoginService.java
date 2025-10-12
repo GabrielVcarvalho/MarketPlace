@@ -3,26 +3,27 @@ package SERVICE;
 import DAO.QueryTemplate;
 import DTO.UsuarioDTO;
 import REPOSITORY.UserRepository;
-import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailNotInUse;
 import SERVICE.Exceptions.NameUserNotExists;
 import SERVICE.Exceptions.WrongPassword;
 
 public class LoginService {
-    private UserRepository userRepository;
+    final private UserRepository userRepository;
+    private TokenService tokenService;
 
-    public LoginService(UserRepository userRepository){
+    public LoginService(UserRepository userRepository, TokenService tokenService){
         this.userRepository = userRepository;
+        this.tokenService = tokenService;
     }
 
     public String login(UsuarioDTO usuarioDTO){
-        return new TokenService("Vitor", userRepository).createToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
+        return tokenService.createToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
     }
 
     public boolean verificarLoginUsuario(UsuarioDTO usuarioDTO){
         VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
-        if (!VerificacaoUtils.nameUserAlredyExist(usuarioDTO.getNome())) throw new NameUserNotExists();
-        if (!VerificacaoUtils.emailUserAlredyExist(usuarioDTO.getEmail())) throw new EmailNotInUse();
+        if (!VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome())) throw new NameUserNotExists();
+        if (!VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail())) throw new EmailNotInUse();
         if (!isCorrectPassword(usuarioDTO)) throw new WrongPassword();
         return true;
     }
