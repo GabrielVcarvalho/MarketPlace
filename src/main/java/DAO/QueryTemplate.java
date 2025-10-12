@@ -6,19 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class QueryTemplate {
     public static class Usuario{
-        public static void createUsuario(UsuarioEntity usuario){
+        public static void createUsuario(String nome, String email, String senha, String role){
             Connection connection = ConnectionUtil.openConnection();
             PreparedStatement pS = null;
 
             try{
                 pS = connection.prepareStatement("INSERT INTO usuarios (nome, email, senha, role) VALUES (?, ?, ?, ?)");
-                pS.setString(1, usuario.getNome().toUpperCase());
-                pS.setString(2, usuario.getEmail().toUpperCase());
-                pS.setString(3, usuario.getSenha());
-                pS.setString(4, usuario.getRole().toUpperCase());
+                pS.setString(1, nome);
+                pS.setString(2, email);
+                pS.setString(3, senha);
+                pS.setString(4, role);
                 pS.executeUpdate();
             } catch (SQLException e) {
                 System.err.println("Erro ao criar Usuario");
@@ -27,7 +28,7 @@ public class QueryTemplate {
             }
         }
 
-    public static UsuarioEntity readUsuario(int id){
+    public static ResultSet readUsuario(int id){
             Connection connection = ConnectionUtil.openConnection();
             PreparedStatement pS = null;
             ResultSet rS = null;
@@ -37,11 +38,7 @@ public class QueryTemplate {
                 rS = pS.executeQuery();
 
                 if(rS.next()){
-                    return new UsuarioEntity(rS.getInt(id),
-                            rS.getString("nome"),
-                            rS.getString("email"),
-                            rS.getString("senha"),
-                            rS.getString("role"));
+                    return rS;
                 }else return null;
             } catch (SQLException e) {
                 System.err.println("Erro ao ler Usuario");
@@ -51,7 +48,7 @@ public class QueryTemplate {
             }
         }
 
-        public static UsuarioEntity readUsuarioByName(String nome){
+        public static ResultSet readUsuarioByName(String nome){
             Connection connection = ConnectionUtil.openConnection();
             PreparedStatement pS = null;
             ResultSet rS = null;
@@ -61,11 +58,7 @@ public class QueryTemplate {
                 rS = pS.executeQuery();
 
                 if(rS.next()){
-                    return new UsuarioEntity(rS.getInt("id"),
-                            rS.getString("nome"),
-                            rS.getString("email"),
-                            rS.getString("senha"),
-                            rS.getString("role"));
+                    return rS;
                 }else return null;
             } catch (SQLException e) {
                 System.err.println("Erro ao ler Usuario");
@@ -75,7 +68,7 @@ public class QueryTemplate {
             }
         }
 
-        public static UsuarioEntity readUsuarioByEmail(String email){
+        public static ResultSet readUsuarioByEmail(String email){
             Connection connection = ConnectionUtil.openConnection();
             PreparedStatement pS = null;
             ResultSet rS = null;
@@ -85,11 +78,7 @@ public class QueryTemplate {
                 rS = pS.executeQuery();
 
                 if(rS.next()){
-                    return new UsuarioEntity(rS.getInt("id"),
-                            rS.getString("nome"),
-                            rS.getString("email"),
-                            rS.getString("senha"),
-                            rS.getString("role"));
+                    return rS;
                 }else return null;
             } catch (SQLException e) {
                 System.err.println("Erro ao ler Usuario");

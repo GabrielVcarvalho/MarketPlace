@@ -1,7 +1,7 @@
 package SERVICE;
 
-import DAO.QueryTemplate;
 import MODEL.UsuarioEntity;
+import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailUserAlreadyUsed;
 import SERVICE.Exceptions.InvalidRole;
 import SERVICE.Exceptions.NameUserAlreadyExists;
@@ -45,8 +45,7 @@ public class RegistroService {
     }
 
     public void registrar(){
-        QueryTemplate.Usuario.createUsuario(new UsuarioEntity(nome,
-                email, senha, role));
+        UsuarioRepository.salvarUsuario(new UsuarioEntity(nome, email, senha, role));
     }
 
     public void verificarRegistroUsuario(){

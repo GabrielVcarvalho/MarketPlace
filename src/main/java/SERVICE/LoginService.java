@@ -1,6 +1,7 @@
 package SERVICE;
 
 import DAO.QueryTemplate;
+import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailNotInUse;
 import SERVICE.Exceptions.NameUserNotExists;
 import SERVICE.Exceptions.WrongPassword;
@@ -44,6 +45,6 @@ public class LoginService {
     }
 
     private boolean isCorrectPassword(){
-        return QueryTemplate.Usuario.readUsuarioByName(nome).getSenha().equals(senha);
+        return UsuarioRepository.buscarUsuarioPorNome(nome).getSenha().equals(senha);
     }
 }

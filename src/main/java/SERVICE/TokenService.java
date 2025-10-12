@@ -1,7 +1,7 @@
 package SERVICE;
 
-import DAO.QueryTemplate;
 import MODEL.UsuarioEntity;
+import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.InvalidUserToken;
 import SERVICE.Exceptions.NameUserNotExists;
 import com.auth0.jwt.JWT;
@@ -57,7 +57,7 @@ public class TokenService {
         String role = jwtDecodificado.get("role");
 
         VerificacaoUtils.verificarCamposVazios(nome, email, role);
-        usuario = QueryTemplate.Usuario.readUsuarioByName(nome);
+        usuario = UsuarioRepository.buscarUsuarioPorNome(nome);
         if(usuario == null) throw new NameUserNotExists();
         if(!usuario.getNome().equalsIgnoreCase(nome)
                 || !usuario.getEmail().equalsIgnoreCase(email)
