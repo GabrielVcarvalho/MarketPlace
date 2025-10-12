@@ -1,5 +1,6 @@
 package SERVICE;
 
+import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailUserAlreadyUsed;
@@ -7,51 +8,19 @@ import SERVICE.Exceptions.InvalidRole;
 import SERVICE.Exceptions.NameUserAlreadyExists;
 
 public class RegistroService {
-    private String nome;
-    private String email;
-    private String senha;
-    private String role;
+    public RegistroService() {
 
-    public String getNome() {
-        return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void registrar(UsuarioDTO usuarioDTO){
+        UsuarioRepository.salvarUsuario(new UsuarioEntity(usuarioDTO.getNome(),
+                usuarioDTO.getEmail(), usuarioDTO.getSenha(), usuarioDTO.getRole()));
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void registrar(){
-        UsuarioRepository.salvarUsuario(new UsuarioEntity(nome, email, senha, role));
-    }
-
-    public void verificarRegistroUsuario(){
-        VerificacaoUtils.verificarCamposVazios(nome, email, senha);
-        if (!VerificacaoUtils.isValidRole(role)) throw new InvalidRole();
-        if (VerificacaoUtils.nameUserAlredyExist(nome)) throw new NameUserAlreadyExists();
-        if (VerificacaoUtils.emailUserAlredyExist(email)) throw new EmailUserAlreadyUsed();
+    public void verificarRegistroUsuario(UsuarioDTO usuarioDTO){
+        VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getSenha());
+        if (!VerificacaoUtils.isValidRole(usuarioDTO.getRole())) throw new InvalidRole();
+        if (VerificacaoUtils.nameUserAlredyExist(usuarioDTO.getNome())) throw new NameUserAlreadyExists();
+        if (VerificacaoUtils.emailUserAlredyExist(usuarioDTO.getEmail())) throw new EmailUserAlreadyUsed();
     }
 }

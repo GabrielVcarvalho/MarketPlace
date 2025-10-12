@@ -1,5 +1,6 @@
 package CONTROLLER;
 
+import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
 import io.javalin.Javalin;
 import java.util.Map;
@@ -13,25 +14,36 @@ public class ApiController {
         api.start(8080);
 
         api.before("/register", context -> {
-            RegistroService registro = context.bodyAsClass(RegistroService.class);
-            registro.verificarRegistroUsuario();
+            UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
+            RegistroService registro = new RegistroService();
+
+            registro.verificarRegistroUsuario(usuarioDTO);
+
             context.attribute("registro", registro);
+            context.attribute("usuarioDTO", usuarioDTO);
         });
 
         api.post("/register", context -> {
             RegistroService registro = context.attribute("registro");
-            registro.registrar();
+            UsuarioDTO usuarioDTO = context.attribute("usuarioDTO");
+            registro.registrar(usuarioDTO);
         });
 
         api.before("/login", context -> {
-            LoginService login = context.bodyAsClass(LoginService.class);
-            login.verificarLoginUsuario();
+            UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
+            LoginService login = new LoginService();
+
+            login.verificarLoginUsuario(usuarioDTO);
+
+            context.attribute("usuarioDTO", usuarioDTO);
             context.attribute("login", login);
         });
 
         api.post("/login", context -> {
             LoginService login = context.attribute("login");
-            context.json(Map.of(login.login(), "token"));
+            UsuarioDTO usuarioDTO = context.attribute("usuarioDTO");
+
+            context.json(Map.of(login.login(usuarioDTO), "token"));
         });
 
         api.before("/usuario/*", context -> {

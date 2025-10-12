@@ -2,7 +2,6 @@ package REPOSITORY;
 
 import MODEL.UsuarioEntity;
 import DAO.QueryTemplate;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
