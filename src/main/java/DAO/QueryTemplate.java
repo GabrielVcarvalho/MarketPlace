@@ -88,24 +88,15 @@ public class QueryTemplate {
             }
         }
 
-        public static ArrayList<UsuarioEntity> readUsuarios(){
+        public static ResultSet readUsuarios(){
             Connection connection = ConnectionUtil.openConnection();
             PreparedStatement pS = null;
             ResultSet rS = null;
-            ArrayList<UsuarioEntity> usuarios = new ArrayList<>();
 
             try{
                 pS = connection.prepareStatement("SELECT id, nome, email, senha, role FROM usuarios");
                 rS = pS.executeQuery();
-
-                while(rS.next()){
-                    usuarios.add(new UsuarioEntity(rS.getInt("id"),
-                            rS.getString("nome"),
-                            rS.getString("email"),
-                            rS.getString("senha"),
-                            rS.getString("role")));
-                };
-                return usuarios;
+                return rS;
             } catch (SQLException e) {
                 System.err.println("Erro ao ler Usuarios");
                 return null;

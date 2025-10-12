@@ -2,18 +2,22 @@ package SERVICE;
 
 import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
+import REPOSITORY.UserRepository;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailUserAlreadyUsed;
 import SERVICE.Exceptions.InvalidRole;
 import SERVICE.Exceptions.NameUserAlreadyExists;
+import org.eclipse.jetty.server.Authentication;
 
 public class RegistroService {
-    public RegistroService() {
+    private UserRepository userRepository;
 
+    public RegistroService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public void registrar(UsuarioDTO usuarioDTO){
-        UsuarioRepository.salvarUsuario(new UsuarioEntity(usuarioDTO.getNome(),
+        userRepository.salvarUsuario(new UsuarioEntity(usuarioDTO.getNome(),
                 usuarioDTO.getEmail(), usuarioDTO.getSenha(), usuarioDTO.getRole()));
     }
 

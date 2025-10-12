@@ -2,18 +2,21 @@ package SERVICE;
 
 import DAO.QueryTemplate;
 import DTO.UsuarioDTO;
+import REPOSITORY.UserRepository;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.EmailNotInUse;
 import SERVICE.Exceptions.NameUserNotExists;
 import SERVICE.Exceptions.WrongPassword;
 
 public class LoginService {
-    public LoginService(){
+    private UserRepository userRepository;
 
+    public LoginService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     public String login(UsuarioDTO usuarioDTO){
-        return new TokenService("Vitor").createToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
+        return new TokenService("Vitor", userRepository).createToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
     }
 
     public boolean verificarLoginUsuario(UsuarioDTO usuarioDTO){
@@ -25,6 +28,6 @@ public class LoginService {
     }
 
     private boolean isCorrectPassword(UsuarioDTO usuarioDTO){
-        return UsuarioRepository.buscarUsuarioPorNome(usuarioDTO.getNome()).getSenha().equals(usuarioDTO.getSenha());
+        return userRepository.lerUsuarioPorNome(usuarioDTO.getNome()).getSenha().equals(usuarioDTO.getSenha());
     }
 }

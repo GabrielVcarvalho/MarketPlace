@@ -1,6 +1,7 @@
 package SERVICE;
 
 import MODEL.UsuarioEntity;
+import REPOSITORY.UserRepository;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Exceptions.InvalidUserToken;
 import SERVICE.Exceptions.NameUserNotExists;
@@ -15,9 +16,11 @@ import java.util.HashMap;
 public class TokenService {
     private static final Algorithm algorithm = Algorithm.HMAC256("password");
     private String issuer;
+    private UserRepository userRepository;
 
-    public TokenService(String issuer) {
+    public TokenService(String issuer, UserRepository userRepository) {
         this.issuer = issuer;
+        this.userRepository = userRepository;
     }
     public TokenService() {
 
@@ -57,7 +60,7 @@ public class TokenService {
         String role = jwtDecodificado.get("role");
 
         VerificacaoUtils.verificarCamposVazios(nome, email, role);
-        usuario = UsuarioRepository.buscarUsuarioPorNome(nome);
+        usuario = userRepository.lerUsuarioPorNome(nome);
         if(usuario == null) throw new NameUserNotExists();
         if(!usuario.getNome().equalsIgnoreCase(nome)
                 || !usuario.getEmail().equalsIgnoreCase(email)
