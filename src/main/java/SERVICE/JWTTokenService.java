@@ -21,6 +21,7 @@ public class JWTTokenService implements TokenService{
         this.userRepository = userRepository;
     }
 
+    @Override
     public String criarToken(String nome, String email, String role){
         VerificacaoUtils.verificarCamposVazios(nome, email, role);
         String token = JWT.create()
@@ -32,6 +33,7 @@ public class JWTTokenService implements TokenService{
         return token;
     }
 
+    @Override
     public HashMap<String, String> decodificarToken(String token){
         HashMap<String, String> camposUsuario = new HashMap<>();
 
@@ -48,6 +50,7 @@ public class JWTTokenService implements TokenService{
         }
     }
 
+    @Override
     public UsuarioEntity verificarUsuarioPorToken(HashMap<String, String> tokenDecodificado){
         UsuarioEntity usuario;
         String nome = tokenDecodificado.get("nome");
