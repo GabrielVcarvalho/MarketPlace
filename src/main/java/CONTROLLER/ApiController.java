@@ -8,7 +8,7 @@ import io.javalin.Javalin;
 import java.util.Map;
 import SERVICE.RegistroService;
 import SERVICE.LoginService;
-import SERVICE.TokenService;
+import SERVICE.JWTTokenService;
 
 public class ApiController {
     public ApiController(){
@@ -18,8 +18,8 @@ public class ApiController {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         UsuarioRepository usuarioRepository = new UsuarioRepository(usuarioDAO);
         RegistroService registroService = new RegistroService(usuarioRepository);
-        TokenService tokenService = new TokenService("Vitor", usuarioRepository);
-        LoginService loginService = new LoginService(usuarioRepository, tokenService);
+        JWTTokenService jwtTokenService = new JWTTokenService("Vitor", usuarioRepository);
+        LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
 
         api.post("/register", context -> {
             UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
@@ -37,7 +37,7 @@ public class ApiController {
             Map<String, Object> json = context.bodyAsClass(Map.class);
             String tokenString = (String) json.get(("token"));
 
-            UsuarioEntity usuario = tokenService.verificarUsuarioByToken(tokenService.decodeToken(tokenString));
+            UsuarioEntity usuario = jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenString));
             context.attribute("usuario", usuario);
         });
     }

@@ -8,7 +8,7 @@ import SERVICE.Exceptions.WrongPassword;
 
 public class LoginService {
     final private UserRepository userRepository;
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public LoginService(UserRepository userRepository, TokenService tokenService){
         this.userRepository = userRepository;
@@ -16,7 +16,7 @@ public class LoginService {
     }
 
     public String login(UsuarioDTO usuarioDTO){
-        return tokenService.createToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
+        return tokenService.criarToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
     }
 
     public boolean verificarLoginUsuario(UsuarioDTO usuarioDTO){
