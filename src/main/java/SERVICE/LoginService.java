@@ -1,6 +1,5 @@
 package SERVICE;
 
-import DAO.QueryTemplate;
 import DTO.UsuarioDTO;
 import REPOSITORY.UserRepository;
 import SERVICE.Exceptions.EmailNotInUse;

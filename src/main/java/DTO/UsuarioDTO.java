@@ -1,7 +1,6 @@
 package DTO;
 
 public class UsuarioDTO {
-    private int id;
     private String nome;
     private String email;
     private String senha;
@@ -9,14 +8,6 @@ public class UsuarioDTO {
 
     public UsuarioDTO() {
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {

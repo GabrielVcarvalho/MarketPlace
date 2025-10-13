@@ -1,5 +1,6 @@
 package CONTROLLER;
 
+import DAO.UsuarioDAO;
 import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
 import REPOSITORY.UsuarioRepository;
@@ -14,7 +15,8 @@ public class ApiController {
         Javalin api = Javalin.create();
         api.start(8080);
 
-        UsuarioRepository usuarioRepository = new UsuarioRepository();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        UsuarioRepository usuarioRepository = new UsuarioRepository(usuarioDAO);
         RegistroService registroService = new RegistroService(usuarioRepository);
         TokenService tokenService = new TokenService("Vitor", usuarioRepository);
         LoginService loginService = new LoginService(usuarioRepository, tokenService);

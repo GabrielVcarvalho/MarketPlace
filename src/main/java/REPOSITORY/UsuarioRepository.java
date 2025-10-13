@@ -1,83 +1,48 @@
 package REPOSITORY;
 
+import DAO.UsuarioDAO;
 import MODEL.UsuarioEntity;
-import DAO.QueryTemplate;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 public class UsuarioRepository implements UserRepository{
+    private final UsuarioDAO usuarioDAO;
+
+    public UsuarioRepository(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
+    }
+
     @Override
     public void salvarUsuario(UsuarioEntity usuario){
-        QueryTemplate.Usuario.createUsuario(usuario.getNome(),
+        usuarioDAO.createUsuario(usuario.getNome(),
                 usuario.getEmail(), usuario.getSenha(), usuario.getRole());
     }
 
     @Override
     public UsuarioEntity lerUsuarioPorId(int id){
-        try{
-            ResultSet resultSet = QueryTemplate.Usuario.readUsuario(id);
-            UsuarioEntity usuario = new UsuarioEntity(resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5));
-            return usuario;
-        }catch (SQLException e){
-            e.getMessage();
-        }
-        return null;
+            MODEL.UsuarioEntity usuario = usuarioDAO.readUsuario(id);
+            if(usuario != null) return usuario;
+            else return null;
     }
 
     @Override
     public UsuarioEntity lerUsuarioPorNome(String nome){
-        try{
-            ResultSet resultSet = QueryTemplate.Usuario.readUsuarioByName(nome);
-            UsuarioEntity usuario = new UsuarioEntity(resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5));
-            return usuario;
-        }catch (SQLException e){
-            e.getMessage();
-        }
-        return null;
+            MODEL.UsuarioEntity usuario = usuarioDAO.readUsuarioByName(nome);
+            if(usuario != null) return usuario;
+            else return null;
     }
 
     @Override
     public UsuarioEntity lerUsuarioPorEmail(String email){
-        try{
-            ResultSet resultSet = QueryTemplate.Usuario.readUsuarioByEmail(email);
-            UsuarioEntity usuario = new UsuarioEntity(resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5));
-            return usuario;
-        }catch (SQLException e){
-            e.getMessage();
+            MODEL.UsuarioEntity usuario = usuarioDAO.readUsuarioByEmail(email);
+            if(usuario != null) return usuario;
+            else return null;
         }
-        return null;
-    }
 
     @Override
     public ArrayList<UsuarioEntity> lerUsuarios() {
-        try{
-            ResultSet resultSet = QueryTemplate.Usuario.readUsuarios();
-            ArrayList<UsuarioEntity> usuarioEntityArrayList = new ArrayList<>();
-            while (resultSet.next()){
-                UsuarioEntity usuario = new UsuarioEntity(resultSet.getInt(1),
-                resultSet.getString(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5));
-                usuarioEntityArrayList.add(usuario);
-            }
-            return usuarioEntityArrayList;
-        }catch (SQLException e){
-            e.getMessage();
-        }
-        return null;
+        java.util.ArrayList<UsuarioEntity> usuarioEntities = usuarioDAO.readUsuarios();
+        if (!usuarioEntities.isEmpty()) return usuarioEntities;
+        else return null;
     }
 }
