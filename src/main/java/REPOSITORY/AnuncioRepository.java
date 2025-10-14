@@ -21,22 +21,22 @@ public class AnuncioRepository implements AdRepository {
 
     @Override
     public void removerAnuncio(AnuncioEntity anuncio) {
-        anuncioDAO.deleteAnuncio(anuncio.getTitulo());
+        anuncioDAO.deleteAnuncio(anuncio.getIdVendedor(), anuncio.getTitulo());
     }
 
     @Override
     public AnuncioEntity lerAnuncioPeloId(int id) {
-        return null;
+        return anuncioDAO.readAnuncioById(id);
     }
 
     @Override
     public AnuncioEntity lerAnuncioPeloNome(String nome) {
-        return null;
+        return anuncioDAO.readAnuncioByName(nome);
     }
 
     @Override
-    public ArrayList<UsuarioEntity> lerTodosOsAnuncios() {
-        return null;
+    public ArrayList<AnuncioEntity> lerTodosOsAnuncios() {
+        return anuncioDAO.readAllFromAnuncios();
     }
 
     @Override
