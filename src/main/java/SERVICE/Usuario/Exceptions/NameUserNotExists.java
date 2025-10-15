@@ -1,4 +1,4 @@
-package SERVICE.Exceptions;
+package SERVICE.Usuario.Exceptions;
 
 public class NameUserNotExists extends RuntimeException {
     public NameUserNotExists() {

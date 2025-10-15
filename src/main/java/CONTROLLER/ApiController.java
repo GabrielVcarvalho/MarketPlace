@@ -6,9 +6,9 @@ import MODEL.UsuarioEntity;
 import REPOSITORY.UsuarioRepository;
 import io.javalin.Javalin;
 import java.util.Map;
-import SERVICE.RegistroService;
-import SERVICE.LoginService;
-import SERVICE.JWTTokenService;
+import SERVICE.Usuario.RegistroService;
+import SERVICE.Usuario.LoginService;
+import SERVICE.Usuario.JWTTokenService;
 
 public class ApiController {
     public ApiController(){

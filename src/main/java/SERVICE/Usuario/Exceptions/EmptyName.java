@@ -1,4 +1,4 @@
-package SERVICE.Exceptions;
+package SERVICE.Usuario.Exceptions;
 
 public class EmptyName extends RuntimeException {
     public EmptyName() {

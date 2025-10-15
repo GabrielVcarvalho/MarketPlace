@@ -14,8 +14,8 @@ public class AnuncioEntity {
 
     public AnuncioEntity(int idVendedor, String titulo, String descricao) {
         this.idVendedor = idVendedor;
-        this.titulo = titulo;
-        this.descricao = descricao;
+        this.titulo = titulo.toUpperCase();
+        this.descricao = descricao.toUpperCase();
     }
 
     public AnuncioEntity(int id, int idVendedor, String titulo, String descricao, int likes, int deslikes) {

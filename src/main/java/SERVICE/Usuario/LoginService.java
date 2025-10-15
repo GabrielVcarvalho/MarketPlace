@@ -1,10 +1,11 @@
-package SERVICE;
+package SERVICE.Usuario;
 
 import DTO.UsuarioDTO;
 import REPOSITORY.UserRepository;
-import SERVICE.Exceptions.EmailNotInUse;
-import SERVICE.Exceptions.NameUserNotExists;
-import SERVICE.Exceptions.WrongPassword;
+import SERVICE.TokenService;
+import SERVICE.Usuario.Exceptions.EmailNotInUse;
+import SERVICE.Usuario.Exceptions.NameUserNotExists;
+import SERVICE.Usuario.Exceptions.WrongPassword;
 
 public class LoginService {
     final private UserRepository userRepository;

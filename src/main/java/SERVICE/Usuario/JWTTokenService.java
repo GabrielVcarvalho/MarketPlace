@@ -1,9 +1,10 @@
-package SERVICE;
+package SERVICE.Usuario;
 
 import MODEL.UsuarioEntity;
 import REPOSITORY.UserRepository;
-import SERVICE.Exceptions.InvalidUserToken;
-import SERVICE.Exceptions.NameUserNotExists;
+import SERVICE.TokenService;
+import SERVICE.Usuario.Exceptions.InvalidUserToken;
+import SERVICE.Usuario.Exceptions.NameUserNotExists;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -11,7 +12,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import java.util.HashMap;
 
-public class JWTTokenService implements TokenService{
+public class JWTTokenService implements TokenService {
     private static final Algorithm algorithm = Algorithm.HMAC256("password");
     private String issuer;
     private final UserRepository userRepository;

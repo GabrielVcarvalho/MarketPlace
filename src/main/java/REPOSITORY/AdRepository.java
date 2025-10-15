@@ -15,8 +15,4 @@ public interface AdRepository {
     public AnuncioEntity lerAnuncioPeloNome(String nome);
 
     public ArrayList<AnuncioEntity> lerTodosOsAnuncios();
-
-    public void adicionarLike(AnuncioEntity anuncio);
-
-    public void adicionarDeslike(AnuncioEntity anuncio);
 }

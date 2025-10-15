@@ -38,14 +38,4 @@ public class AnuncioRepository implements AdRepository {
     public ArrayList<AnuncioEntity> lerTodosOsAnuncios() {
         return anuncioDAO.readAllFromAnuncios();
     }
-
-    @Override
-    public void adicionarLike(AnuncioEntity anuncio) {
-
-    }
-
-    @Override
-    public void adicionarDeslike(AnuncioEntity anuncio) {
-
-    }
 }

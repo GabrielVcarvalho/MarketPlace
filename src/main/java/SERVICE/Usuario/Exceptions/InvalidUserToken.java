@@ -1,4 +1,4 @@
-package SERVICE.Exceptions;
+package SERVICE.Usuario.Exceptions;
 
 public class InvalidUserToken extends RuntimeException {
     public InvalidUserToken() {
