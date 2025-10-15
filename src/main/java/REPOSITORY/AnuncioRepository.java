@@ -2,12 +2,11 @@ package REPOSITORY;
 
 import DAO.AnuncioDAO;
 import MODEL.AnuncioEntity;
-import MODEL.UsuarioEntity;
 
 import java.util.ArrayList;
 
 public class AnuncioRepository implements AdRepository {
-    private AnuncioDAO anuncioDAO;
+    private final AnuncioDAO anuncioDAO;
 
     public AnuncioRepository(AnuncioDAO anuncioDAO) {
         this.anuncioDAO = anuncioDAO;

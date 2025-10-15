@@ -1,12 +1,11 @@
 package SERVICE.Anuncio;
 
 import DTO.AnuncioDTO;
-import DTO.UsuarioDTO;
 import MODEL.AnuncioEntity;
-import MODEL.UsuarioEntity;
 import REPOSITORY.AdRepository;
 import REPOSITORY.UserRepository;
-import SERVICE.Anuncio.Exceptions.NameOfAdAlreadyExists;
+import SERVICE.Anuncio.Exceptions.InvalidSellerId;
+import SERVICE.Anuncio.Exceptions.TitleOfAdAlreadyExists;
 
 public class AnuncioService {
     private final AdRepository adRepository;
@@ -17,19 +16,25 @@ public class AnuncioService {
         this.userRepository = userRepository;
     }
 
-    public void verificarCriacaoAnuncio(UsuarioDTO usuarioDTO, AnuncioDTO anuncioDTO){
-        verificarCamposVazios(anuncioDTO.getId(), anuncioDTO.getTitulo(), anuncioDTO.getDescricao());
+    public void verificarCriacaoAnuncio(AnuncioDTO anuncioDTO){
+        verificarCamposVazios(anuncioDTO.getIdVendedor(), anuncioDTO.getTitulo(), anuncioDTO.getDescricao());
 
-        if(adRepository.lerAnuncioPeloNome(anuncioDTO.getTitulo()) != null)
-            throw new NameOfAdAlreadyExists();
+        if(userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor()) == null)
+            throw new InvalidSellerId();
+
+        AnuncioEntity anuncioEntity = anuncioDTO.toEntity();
+        if(adRepository.lerAnuncioPeloNome(anuncioEntity.getTitulo()) != null)
+            throw new TitleOfAdAlreadyExists();
     }
 
     public void criarAnuncio(AnuncioDTO anuncioDTO){
-        adRepository.criarAnuncio(new AnuncioEntity(anuncioDTO.getIdVendedor(),
-                anuncioDTO.getTitulo(), anuncioDTO.getDescricao()));
+        adRepository.criarAnuncio(anuncioDTO.toEntity());
     }
 
-    public void verificarCamposVazios(int id, String titulo, String descricao){
-
+    private void verificarCamposVazios(int id, String titulo, String descricao){
+        if(id <= 0 ||
+                titulo == null || titulo.isBlank() ||
+                descricao == null || descricao.isBlank())
+            throw new IllegalArgumentException("Campo inválido na criação do anuncio");
     }
 }

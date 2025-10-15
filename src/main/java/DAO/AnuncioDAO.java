@@ -1,7 +1,6 @@
 package DAO;
 
 import MODEL.AnuncioEntity;
-import DAO.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

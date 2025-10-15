@@ -7,9 +7,9 @@ import SERVICE.Usuario.Exceptions.EmptyPassword;
 
 public class VerificacaoUtils{
     public static boolean verificarCamposVazios(String nome, String email, String senha){
-        if (nome == null || nome.isEmpty()) throw new EmptyName();
-        if (email == null || email.isEmpty()) throw new EmptyEmail();
-        if (senha == null || senha.isEmpty()) throw new EmptyPassword();
+        if (nome == null || nome.isBlank()) throw new EmptyName();
+        if (email == null || email.isBlank()) throw new EmptyEmail();
+        if (senha == null || senha.isBlank()) throw new EmptyPassword();
         return true;
     }
 

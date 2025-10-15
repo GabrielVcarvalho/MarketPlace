@@ -1,7 +1,7 @@
 package SERVICE.Anuncio.Exceptions;
 
-public class NameOfAdAlreadyExists extends RuntimeException {
-    public NameOfAdAlreadyExists() {
+public class TitleOfAdAlreadyExists extends RuntimeException {
+    public TitleOfAdAlreadyExists() {
         super("O nome de anúncio informado já está em uso");
     }
 }

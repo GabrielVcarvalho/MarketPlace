@@ -1,9 +1,15 @@
 package CONTROLLER;
 
+import DAO.AnuncioDAO;
+import DAO.DeslikeDAO;
+import DAO.LikeDAO;
 import DAO.UsuarioDAO;
+import DTO.AnuncioDTO;
 import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
+import REPOSITORY.AnuncioRepository;
 import REPOSITORY.UsuarioRepository;
+import SERVICE.Anuncio.AnuncioService;
 import io.javalin.Javalin;
 import java.util.Map;
 import SERVICE.Usuario.RegistroService;
@@ -15,11 +21,14 @@ public class ApiController {
         Javalin api = Javalin.create();
         api.start(8080);
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        UsuarioRepository usuarioRepository = new UsuarioRepository(usuarioDAO);
+        UsuarioRepository usuarioRepository = new UsuarioRepository(new UsuarioDAO());
         RegistroService registroService = new RegistroService(usuarioRepository);
         JWTTokenService jwtTokenService = new JWTTokenService("Vitor", usuarioRepository);
         LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
+
+        AnuncioDAO anuncioDAO = new AnuncioDAO(new LikeDAO(), new DeslikeDAO());
+        AnuncioRepository anuncioRepository = new AnuncioRepository(anuncioDAO);
+        AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
 
         api.post("/register", context -> {
             UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
@@ -39,6 +48,12 @@ public class ApiController {
 
             UsuarioEntity usuario = jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenString));
             context.attribute("usuario", usuario);
+        });
+
+        api.post("/usuario/vendedor/criarAnuncio", context -> {
+           AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+           anuncioService.verificarCriacaoAnuncio(anuncioDTO);
+           anuncioService.criarAnuncio(anuncioDTO);
         });
     }
 }
