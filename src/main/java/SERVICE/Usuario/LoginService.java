@@ -20,12 +20,17 @@ public class LoginService {
         return tokenService.criarToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
     }
 
-    public boolean verificarLoginUsuario(UsuarioDTO usuarioDTO){
+    public void verificarLoginUsuario(UsuarioDTO usuarioDTO){
         VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
-        if (!VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome())) throw new NameUserNotExists();
-        if (!VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail())) throw new EmailNotInUse();
-        if (!isCorrectPassword(usuarioDTO)) throw new WrongPassword();
-        return true;
+
+        if (!VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome()))
+            throw new NameUserNotExists();
+
+        if (!VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail()))
+            throw new EmailNotInUse();
+
+        if (!isCorrectPassword(usuarioDTO))
+            throw new WrongPassword();
     }
 
     private boolean isCorrectPassword(UsuarioDTO usuarioDTO){

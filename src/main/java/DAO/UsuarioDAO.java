@@ -58,7 +58,7 @@ public class UsuarioDAO {
         ResultSet rS = null;
         try{
             pS = connection.prepareStatement("SELECT id, nome, email, senha, role FROM usuarios WHERE nome = ?");
-            pS.setString(1, nome.toUpperCase());
+            pS.setString(1, nome);
             rS = pS.executeQuery();
 
             if(rS.next()){
@@ -82,7 +82,7 @@ public class UsuarioDAO {
         ResultSet rS = null;
         try{
             pS = connection.prepareStatement("SELECT id, nome, email, senha, role FROM usuarios WHERE email = ?");
-            pS.setString(1, email.toUpperCase());
+            pS.setString(1, email);
             rS = pS.executeQuery();
 
             if(rS.next()){

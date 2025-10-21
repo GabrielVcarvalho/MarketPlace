@@ -1,7 +1,6 @@
 package SERVICE.Anuncio;
 
 import DTO.AnuncioDTO;
-import MODEL.AnuncioEntity;
 import REPOSITORY.AdRepository;
 import REPOSITORY.UserRepository;
 import SERVICE.Anuncio.Exceptions.InvalidSellerId;
@@ -22,8 +21,7 @@ public class AnuncioService {
         if(userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor()) == null)
             throw new InvalidSellerId();
 
-        AnuncioEntity anuncioEntity = anuncioDTO.toEntity();
-        if(adRepository.lerAnuncioPeloNome(anuncioEntity.getTitulo()) != null)
+        if(adRepository.lerAnuncioPeloNome(anuncioDTO.toEntity().getTitulo()) != null)
             throw new TitleOfAdAlreadyExists();
     }
 
@@ -35,6 +33,6 @@ public class AnuncioService {
         if(id <= 0 ||
                 titulo == null || titulo.isBlank() ||
                 descricao == null || descricao.isBlank())
-            throw new IllegalArgumentException("Campo inválido na criação do anuncio");
+            throw new IllegalArgumentException("Campo vazio ou inválido na criação do anuncio");
     }
 }

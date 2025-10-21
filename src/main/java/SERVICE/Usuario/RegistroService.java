@@ -21,8 +21,14 @@ public class RegistroService {
 
     public void verificarRegistroUsuario(UsuarioDTO usuarioDTO){
         VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getSenha());
-        if (!VerificacaoUtils.isValidRole(usuarioDTO.getRole())) throw new InvalidRole();
-        if (VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome())) throw new NameUserAlreadyExists();
-        if (VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail())) throw new EmailUserAlreadyUsed();
+
+        if (!VerificacaoUtils.isValidRole(usuarioDTO.getRole()))
+            throw new InvalidRole();
+
+        if (VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome()))
+            throw new NameUserAlreadyExists();
+
+        if (VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail()))
+            throw new EmailUserAlreadyUsed();
     }
 }
