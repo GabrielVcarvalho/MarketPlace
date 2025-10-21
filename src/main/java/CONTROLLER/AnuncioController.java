@@ -7,13 +7,11 @@ import SERVICE.Anuncio.AnuncioService;
 import io.javalin.http.Context;
 
 public class AnuncioController {
-    private final AnuncioDAO anuncioDAO;
-    private final AnuncioRepository anuncioRepository;
     private final AnuncioService anuncioService;
 
-    public AnuncioController(AnuncioDAO anuncioDAO, AnuncioRepository anuncioRepository, AnuncioService anuncioService) {
-        this.anuncioDAO = anuncioDAO;
-        this.anuncioRepository = anuncioRepository;
+    public AnuncioController(
+            AnuncioService anuncioService
+    ) {
         this.anuncioService = anuncioService;
     }
 

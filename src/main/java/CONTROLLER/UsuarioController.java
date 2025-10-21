@@ -2,7 +2,6 @@ package CONTROLLER;
 
 import DTO.UsuarioDTO;
 import MODEL.UsuarioEntity;
-import REPOSITORY.UsuarioRepository;
 import SERVICE.Usuario.JWTTokenService;
 import SERVICE.Usuario.LoginService;
 import SERVICE.Usuario.RegistroService;
@@ -11,18 +10,15 @@ import io.javalin.http.Context;
 import java.util.Map;
 
 public class UsuarioController {
-    private final UsuarioRepository usuarioRepository;
     private final RegistroService registroService;
     private final JWTTokenService jwtTokenService;
     private final LoginService loginService;
 
     public UsuarioController(
-            UsuarioRepository usuarioRepository,
             RegistroService registroService,
             JWTTokenService jwtTokenService,
             LoginService loginService
     ) {
-        this.usuarioRepository = usuarioRepository;
         this.registroService = registroService;
         this.jwtTokenService = jwtTokenService;
         this.loginService = loginService;
@@ -41,10 +37,18 @@ public class UsuarioController {
     }
 
     public void verificarTokenUsuario(Context context){
-        Map<String, Object> json = context.bodyAsClass(Map.class);
-        String tokenString = (String) json.get(("token"));
+        String tokenHeader =  context.header("Authorization");
 
-        UsuarioEntity usuario = jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenString));
-        context.attribute("usuario", usuario);
+        if(tokenHeader == null || tokenHeader.isEmpty()){
+            context.status(401).result("Token vazio");
+            return;
+        }
+
+        try{
+            jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenHeader));
+        } catch (RuntimeException e) {
+            context.status(401).result("Token inválido");
+            return;
+        }
     }
 }

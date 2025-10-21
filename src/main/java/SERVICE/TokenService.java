@@ -1,7 +1,5 @@
 package SERVICE;
 
-import MODEL.UsuarioEntity;
-
 import java.util.HashMap;
 
 public interface TokenService {
@@ -9,5 +7,5 @@ public interface TokenService {
 
     public HashMap<String, String> decodificarToken(String token);
 
-    public UsuarioEntity verificarUsuarioPorToken(HashMap<String, String> tokenDecodificado);
+    public boolean verificarUsuarioPorToken(HashMap<String, String> tokenDecodificado);
 }

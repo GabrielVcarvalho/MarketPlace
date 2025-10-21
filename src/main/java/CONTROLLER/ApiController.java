@@ -4,7 +4,6 @@ import DAO.AnuncioDAO;
 import DAO.DeslikeDAO;
 import DAO.LikeDAO;
 import DAO.UsuarioDAO;
-import DTO.AnuncioDTO;
 import REPOSITORY.AnuncioRepository;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Anuncio.AnuncioService;
@@ -16,7 +15,6 @@ import SERVICE.Usuario.JWTTokenService;
 public class ApiController {
     public ApiController(){
         Javalin api = Javalin.create();
-        api.start(8080);
 
         UsuarioRepository usuarioRepository = new UsuarioRepository(new UsuarioDAO());
         JWTTokenService jwtTokenService = new JWTTokenService("Vitor",  usuarioRepository);
@@ -28,12 +26,10 @@ public class ApiController {
         AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
 
         UsuarioController usuarioController = new UsuarioController(
-                usuarioRepository, registroService,
-                jwtTokenService, loginService
+                registroService, jwtTokenService, loginService
         );
 
-        AnuncioController anuncioController = new AnuncioController(
-                anuncioDAO, anuncioRepository, anuncioService);
+        AnuncioController anuncioController = new AnuncioController(anuncioService);
 
         api.post("/register", usuarioController::registrar);
 
@@ -42,5 +38,7 @@ public class ApiController {
         api.before("/usuario/*", usuarioController::verificarTokenUsuario);
 
         api.post("/usuario/vendedor/criarAnuncio", anuncioController::criarAnuncio);
+
+        api.start(8080);
     }
 }

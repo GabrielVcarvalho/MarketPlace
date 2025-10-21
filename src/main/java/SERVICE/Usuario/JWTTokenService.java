@@ -52,7 +52,7 @@ public class JWTTokenService implements TokenService {
     }
 
     @Override
-    public UsuarioEntity verificarUsuarioPorToken(HashMap<String, String> tokenDecodificado){
+    public boolean verificarUsuarioPorToken(HashMap<String, String> tokenDecodificado){
         UsuarioEntity usuario;
         String nome = tokenDecodificado.get("nome");
         String email = tokenDecodificado.get("email");
@@ -64,10 +64,7 @@ public class JWTTokenService implements TokenService {
         if(!usuario.getNome().equalsIgnoreCase(nome)
                 || !usuario.getEmail().equalsIgnoreCase(email)
                 || !usuario.getRole().equalsIgnoreCase(role)) throw new InvalidUserToken();
-        return new UsuarioEntity(usuario.getId(),
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getSenha(),
-                usuario.getRole());
+
+        return true;
     }
 }
