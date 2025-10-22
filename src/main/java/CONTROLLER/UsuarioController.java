@@ -1,11 +1,11 @@
 package CONTROLLER;
 
 import DTO.UsuarioDTO;
-import MODEL.UsuarioEntity;
 import SERVICE.Usuario.JWTTokenService;
 import SERVICE.Usuario.LoginService;
 import SERVICE.Usuario.RegistroService;
 import io.javalin.http.Context;
+import io.javalin.http.UnauthorizedResponse;
 
 import java.util.Map;
 
@@ -39,16 +39,10 @@ public class UsuarioController {
     public void verificarTokenUsuario(Context context){
         String tokenHeader =  context.header("Authorization");
 
-        if(tokenHeader == null || tokenHeader.isEmpty()){
-            context.status(401).result("Token vazio");
-            return;
-        }
-
         try{
             jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenHeader));
         } catch (RuntimeException e) {
-            context.status(401).result("Token inválido");
-            return;
+            throw new UnauthorizedResponse(e.getMessage());
         }
     }
 }

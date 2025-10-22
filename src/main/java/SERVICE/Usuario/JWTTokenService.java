@@ -46,8 +46,7 @@ public class JWTTokenService implements TokenService {
             camposUsuario.put("role", jwt.getClaim("role").asString());
             return  camposUsuario;
         }catch (JWTVerificationException e){
-            System.err.println(e.getMessage());
-            return null;
+            throw new InvalidUserToken();
         }
     }
 

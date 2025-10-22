@@ -10,7 +10,10 @@ public class AnuncioService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
 
-    public AnuncioService(AdRepository adRepository, UserRepository userRepository) {
+    public AnuncioService(
+            AdRepository adRepository,
+            UserRepository userRepository
+    ) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
     }

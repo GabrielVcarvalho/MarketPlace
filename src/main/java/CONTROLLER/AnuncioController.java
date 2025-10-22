@@ -1,8 +1,6 @@
 package CONTROLLER;
 
-import DAO.AnuncioDAO;
 import DTO.AnuncioDTO;
-import REPOSITORY.AnuncioRepository;
 import SERVICE.Anuncio.AnuncioService;
 import io.javalin.http.Context;
 
