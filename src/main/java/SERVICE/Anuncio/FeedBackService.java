@@ -11,7 +11,11 @@ public class FeedBackService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
 
-    public FeedBackService(FeedBackRepository feedBackRepository, AdRepository adRepository, UserRepository userRepository) {
+    public FeedBackService(
+            FeedBackRepository feedBackRepository,
+            AdRepository adRepository,
+            UserRepository userRepository
+    ) {
         this.feedBackRepository = feedBackRepository;
         this.adRepository = adRepository;
         this.userRepository = userRepository;
@@ -32,7 +36,7 @@ public class FeedBackService {
         feedBackRepository.adicinarDeslike(idAnuncio, idUsuario);
     }
 
-    public void removerDesike(int idAnuncio, int idUsuario){
+    public void removerDeslike(int idAnuncio, int idUsuario){
         verificarIDs(idAnuncio, idUsuario);
         feedBackRepository.removerDeslike(idAnuncio, idUsuario);
     }

@@ -5,8 +5,10 @@ import DAO.DeslikeDAO;
 import DAO.LikeDAO;
 import DAO.UsuarioDAO;
 import REPOSITORY.AnuncioRepository;
+import REPOSITORY.AvaliacaoAnuncioRepository;
 import REPOSITORY.UsuarioRepository;
 import SERVICE.Anuncio.AnuncioService;
+import SERVICE.Anuncio.FeedBackService;
 import io.javalin.Javalin;
 import SERVICE.Usuario.RegistroService;
 import SERVICE.Usuario.LoginService;
@@ -21,15 +23,25 @@ public class ApiController {
         RegistroService registroService = new RegistroService(usuarioRepository);
         LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
 
-        AnuncioDAO anuncioDAO = new AnuncioDAO(new LikeDAO(), new DeslikeDAO());
+        LikeDAO likeDAO = new LikeDAO();
+        DeslikeDAO deslikeDAO = new DeslikeDAO();
+        AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
         AnuncioRepository anuncioRepository = new AnuncioRepository(anuncioDAO);
         AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
+
+        FeedBackService feedBackService = new FeedBackService(
+                new AvaliacaoAnuncioRepository(likeDAO, deslikeDAO),
+                anuncioRepository,
+                usuarioRepository
+        );
 
         UsuarioController usuarioController = new UsuarioController(
                 registroService, jwtTokenService, loginService
         );
 
-        AnuncioController anuncioController = new AnuncioController(anuncioService);
+        AnuncioController anuncioController = new AnuncioController(
+                anuncioService, feedBackService
+        );
 
         api.post("/register", usuarioController::registrar);
 
