@@ -23,8 +23,25 @@ public class AnuncioController {
         anuncioService.criarAnuncio(anuncioDTO);
     }
 
-    public void curtirAnuncio(Context context){
+    public void likeAnuncio(Context context){
         AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
-        feedBackService.like(anuncioDTO.getId(), anuncioDTO.getIdVendedor());
+        try{
+            feedBackService.like(anuncioDTO.getId(), anuncioDTO.getIdVendedor());
+            context.status(200);
+        } catch (RuntimeException e) {
+            context.status(400);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void deslikeAnuncio(Context context){
+        AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+        try{
+            feedBackService.deslike(anuncioDTO.getId(), anuncioDTO.getIdVendedor());
+            context.status(200);
+        } catch (RuntimeException e) {
+            context.status(400);
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

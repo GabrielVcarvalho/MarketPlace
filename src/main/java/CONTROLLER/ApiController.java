@@ -28,7 +28,6 @@ public class ApiController {
         AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
         AnuncioRepository anuncioRepository = new AnuncioRepository(anuncioDAO);
         AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
-
         FeedBackService feedBackService = new FeedBackService(
                 new AvaliacaoAnuncioRepository(likeDAO, deslikeDAO),
                 anuncioRepository,
@@ -50,6 +49,10 @@ public class ApiController {
         api.before("/usuario/*", usuarioController::verificarTokenUsuario);
 
         api.post("/usuario/vendedor/criarAnuncio", anuncioController::criarAnuncio);
+
+        api.post("/usuario/likeAnuncio", anuncioController::likeAnuncio);
+
+        api.post("/usuario/deslikeAnuncio", anuncioController::deslikeAnuncio);
 
         api.start(8080);
     }
