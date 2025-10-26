@@ -1,15 +1,21 @@
 package REPOSITORY;
 
 import DAO.AnuncioDAO;
+import DAO.DeslikeDAO;
+import DAO.LikeDAO;
 import MODEL.AnuncioEntity;
 
 import java.util.ArrayList;
 
 public class AnuncioRepository implements AdRepository {
     private final AnuncioDAO anuncioDAO;
+    private final LikeDAO likeDAO;
+    private final DeslikeDAO deslikeDAO;
 
-    public AnuncioRepository(AnuncioDAO anuncioDAO) {
+    public AnuncioRepository(AnuncioDAO anuncioDAO, LikeDAO likeDAO, DeslikeDAO deslikeDAO) {
         this.anuncioDAO = anuncioDAO;
+        this.likeDAO = likeDAO;
+        this.deslikeDAO = deslikeDAO;
     }
 
     @Override
@@ -30,7 +36,11 @@ public class AnuncioRepository implements AdRepository {
 
     @Override
     public AnuncioEntity lerAnuncioPeloNome(String nome) {
-        return anuncioDAO.readAnuncioByName(nome);
+        AnuncioEntity anuncio = anuncioDAO.readAnuncioByName(nome);
+        anuncio.setLikes(likeDAO.readLikesOfAd(anuncio.getId()));
+        anuncio.setDeslikes(deslikeDAO.readDeslikesOfAd(anuncio.getId()));
+
+        return anuncio;
     }
 
     @Override
