@@ -1,5 +1,7 @@
 package MODEL;
 
+import DTO.AnuncioDTO;
+
 public class AnuncioEntity {
     private int id;
     private int idVendedor;
@@ -73,5 +75,14 @@ public class AnuncioEntity {
 
     public void setDeslikes(int deslikes) {
         this.deslikes = deslikes;
+    }
+
+    public AnuncioDTO toDTO(){
+        return new AnuncioDTO(getId(),
+                getIdVendedor(),
+                getTitulo(),
+                getDescricao(),
+                getLikes(),
+                getDeslikes());
     }
 }

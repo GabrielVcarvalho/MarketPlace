@@ -44,17 +44,18 @@ public class DeslikeDAO {
         ResultSet resultSet = null;
 
         try{
-            preparedStatement = connection.prepareStatement("SELECT id FROM deslikes WHERE anuncio = ?");
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) AS linhas FROM deslikes WHERE anuncio = ?");
             preparedStatement.setInt(1, idAnuncio);
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) deslikes++;
-            return deslikes;
+            if (resultSet.next())
+                deslikes = resultSet.getInt("linhas");
         }catch (SQLException e){
             System.err.println(e.getMessage());
-            return 0;
         }finally {
             ConnectionUtil.closeAll(connection, preparedStatement, resultSet);
         }
+
+        return deslikes;
     }
 }

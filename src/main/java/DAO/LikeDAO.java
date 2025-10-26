@@ -45,17 +45,18 @@ public class LikeDAO {
         ResultSet resultSet = null;
 
         try{
-            preparedStatement = connection.prepareStatement("SELECT id FROM likes WHERE anuncio = ?");
+            preparedStatement = connection.prepareStatement("SELECT COUNT(*) AS linhas FROM likes WHERE anuncio = ?");
             preparedStatement.setInt(1, idAnuncio);
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) likes++;
-            return likes;
+            if (resultSet.next())
+                likes = resultSet.getInt("linhas");
         }catch (SQLException e){
             System.err.println(e.getMessage());
-            return 0;
         }finally {
             ConnectionUtil.closeAll(connection, preparedStatement, resultSet);
         }
+
+        return likes;
     }
 }

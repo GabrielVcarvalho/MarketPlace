@@ -14,6 +14,15 @@ public class AnuncioDTO {
 
     }
 
+    public AnuncioDTO(int id, int idVendedor, String titulo, String descricao, int likes, int deslikes) {
+        this.id = id;
+        this.idVendedor = idVendedor;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.likes = likes;
+        this.deslikes = deslikes;
+    }
+
     public int getId() {
         return id;
     }

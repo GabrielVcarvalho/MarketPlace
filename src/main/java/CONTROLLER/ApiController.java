@@ -35,11 +35,14 @@ public class ApiController {
         );
 
         UsuarioController usuarioController = new UsuarioController(
-                registroService, jwtTokenService, loginService
+                registroService,
+                jwtTokenService,
+                loginService
         );
 
         AnuncioController anuncioController = new AnuncioController(
-                anuncioService, feedBackService
+                anuncioService,
+                feedBackService
         );
 
         api.post("/register", usuarioController::registrar);

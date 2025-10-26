@@ -58,7 +58,7 @@ public class AnuncioDAO {
         ResultSet resultSet = null;
 
         try{
-            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao, likes, deslikes FROM anuncios WHERE id = ?");
+            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao FROM anuncios WHERE id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -83,7 +83,7 @@ public class AnuncioDAO {
         ResultSet resultSet = null;
 
         try{
-            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao, likes, deslikes FROM anuncios WHERE titulo = ?");
+            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao FROM anuncios WHERE titulo = ?");
             preparedStatement.setString(1, titulo);
             resultSet = preparedStatement.executeQuery();
 
@@ -109,7 +109,7 @@ public class AnuncioDAO {
         ArrayList<AnuncioEntity> anuncioEntities = new ArrayList<>();
 
         try{
-            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao, likes, deslikes FROM anuncios");
+            preparedStatement = connection.prepareStatement("SELECT id, vendedor, titulo, descricao FROM anuncios");
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
