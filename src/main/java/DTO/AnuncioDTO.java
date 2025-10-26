@@ -73,6 +73,6 @@ public class AnuncioDTO {
 
     //Mantido dentro da classe para dar mais legibilidade já o fluxo natural de TODO DTO é virar uma Entity
     public AnuncioEntity toEntity(){
-        return new AnuncioEntity(this.getIdVendedor(), this.getTitulo(), this.getDescricao());
+        return new AnuncioEntity(this.getIdVendedor(), this.getTitulo().toUpperCase(), this.getDescricao());
     }
 }
