@@ -42,7 +42,7 @@ public class UsuarioController {
         try{
             jwtTokenService.verificarUsuarioPorToken(jwtTokenService.decodificarToken(tokenHeader));
         } catch (RuntimeException e) {
-            throw new UnauthorizedResponse(e.getMessage());
+            throw new UnauthorizedResponse();
         }
     }
 }

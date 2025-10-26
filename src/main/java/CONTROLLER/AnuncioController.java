@@ -2,6 +2,8 @@ package CONTROLLER;
 
 import DTO.AnuncioDTO;
 import SERVICE.Anuncio.AnuncioService;
+import SERVICE.Anuncio.Exceptions.AnuncioIdNotExists;
+import SERVICE.Anuncio.Exceptions.TitleOfAdNotExits;
 import SERVICE.Anuncio.FeedBackService;
 import io.javalin.http.Context;
 
@@ -42,6 +44,21 @@ public class AnuncioController {
         } catch (RuntimeException e) {
             context.status(400);
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void lerAnuncioPeloTitulo(Context context){
+        int id;
+
+        try{
+            id = Integer.parseInt(context.pathParam("id"));
+            context.json(anuncioService.lerAnuncio(id));
+        }
+        catch (NumberFormatException e) {
+            context.status(400).result("O id informado não é um número");
+        }
+        catch (AnuncioIdNotExists e) {
+            context.status(400).result("O id informado não existe");
         }
     }
 }

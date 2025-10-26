@@ -42,7 +42,7 @@ public class AnuncioService {
         AnuncioEntity anuncio = adRepository.lerAnuncioPeloNome(titulo);
 
         if(anuncio == null)
-            throw new AnuncioIdNotExists("O anuncio informado não existe");
+            throw new TitleOfAdNotExits("O anuncio informado não existe");
 
         return toDTO(anuncio);
     }
@@ -54,11 +54,12 @@ public class AnuncioService {
         AnuncioEntity anuncio = adRepository.lerAnuncioPeloId(id);
 
         if(anuncio == null)
-            throw new TitleOfAdNotExits("O anuncio informado não existe");
+            throw new AnuncioIdNotExists("O anuncio informado não existe");
 
         return toDTO(anuncio);
     }
 
+    //Tirado de dentro da entity para não dar responsibilidades demais a parte mais interna do código
     private AnuncioDTO toDTO(AnuncioEntity from){
         verificarCamposVazios(from.getId(),
                 from.getTitulo(),

@@ -26,7 +26,9 @@ public class ApiController {
         LikeDAO likeDAO = new LikeDAO();
         DeslikeDAO deslikeDAO = new DeslikeDAO();
         AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
-        AnuncioRepository anuncioRepository = new AnuncioRepository(anuncioDAO);
+        AnuncioRepository anuncioRepository = new AnuncioRepository(
+                anuncioDAO,
+                likeDAO, deslikeDAO);
         AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
         FeedBackService feedBackService = new FeedBackService(
                 new AvaliacaoAnuncioRepository(likeDAO, deslikeDAO),
