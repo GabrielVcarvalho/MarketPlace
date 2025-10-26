@@ -57,8 +57,26 @@ public class AnuncioController {
         catch (NumberFormatException e) {
             context.status(400).result("O id informado não é um número");
         }
+        catch (IllegalArgumentException e){
+            context.status(400).result("id é nulo ou inválido");
+        }
         catch (AnuncioIdNotExists e) {
-            context.status(400).result("O id informado não existe");
+            context.status(404).result("O id informado não existe");
+        }
+    }
+
+    public void lerAnuncioPeloTitulo(Context context){
+        String titulo;
+
+        try{
+            titulo = context.pathParam("titulo");
+            context.json(anuncioService.lerAnuncio(titulo));
+        }
+        catch (IllegalArgumentException e){
+            context.status(400).result("Título é nulo");
+        }
+        catch (TitleOfAdNotExits e) {
+            context.status(404).result("O titulo do anuncio informado não existe");
         }
     }
 }
