@@ -31,7 +31,11 @@ public class AnuncioRepository implements AdRepository {
 
     @Override
     public AnuncioEntity lerAnuncioPeloId(int id) {
-        return anuncioDAO.readAnuncioById(id);
+        AnuncioEntity anuncio = anuncioDAO.readAnuncioById(id);
+        anuncio.setLikes(likeDAO.readLikesOfAd(anuncio.getId()));
+        anuncio.setDeslikes(deslikeDAO.readDeslikesOfAd(anuncio.getId()));
+
+        return anuncio;
     }
 
     @Override
