@@ -20,6 +20,13 @@ public class AnuncioEntity {
         this.descricao = descricao.toUpperCase();
     }
 
+    public AnuncioEntity(int id, int idVendedor, String titulo, String descricao) {
+        this.id = id;
+        this.idVendedor = idVendedor;
+        this.titulo = titulo;
+        this.descricao = descricao;
+    }
+
     public AnuncioEntity(int id, int idVendedor, String titulo, String descricao, int likes, int deslikes) {
         this.id = id;
         this.idVendedor = idVendedor;

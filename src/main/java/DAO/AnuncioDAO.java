@@ -65,9 +65,7 @@ public class AnuncioDAO {
             if(resultSet.next()) return new AnuncioEntity(resultSet.getInt(1),
                     resultSet.getInt(2),
                     resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getInt(5),
-                    resultSet.getInt(6));
+                    resultSet.getString(4));
             else return null;
         }catch (SQLException e){
             System.err.println(e.getMessage());
@@ -90,9 +88,7 @@ public class AnuncioDAO {
             if(resultSet.next()) return new AnuncioEntity(resultSet.getInt("id"),
                     resultSet.getInt("vendedor"),
                     resultSet.getString("titulo"),
-                    resultSet.getString("descricao"),
-                    resultSet.getInt("likes"),
-                    resultSet.getInt("deslikes"));
+                    resultSet.getString("descricao"));
             else return null;
         }catch (SQLException e){
             System.err.println(e.getMessage());

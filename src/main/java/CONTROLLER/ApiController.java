@@ -55,6 +55,8 @@ public class ApiController {
 
         api.post("/usuario/vendedor/criarAnuncio", anuncioController::criarAnuncio);
 
+        api.get("usuario/buscarAnuncioPorId/{id}", anuncioController::lerAnuncioPeloId);
+
         api.post("/usuario/likeAnuncio", anuncioController::likeAnuncio);
 
         api.post("/usuario/deslikeAnuncio", anuncioController::deslikeAnuncio);

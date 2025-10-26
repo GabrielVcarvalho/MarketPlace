@@ -47,7 +47,7 @@ public class AnuncioController {
         }
     }
 
-    public void lerAnuncioPeloTitulo(Context context){
+    public void lerAnuncioPeloId(Context context){
         int id;
 
         try{
