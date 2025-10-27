@@ -1,4 +1,4 @@
-import CONTROLLER.ApiController;
+import controller.ApiController;
 
 public class Main {
     public static void main(String[] args) {
