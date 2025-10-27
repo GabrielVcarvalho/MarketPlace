@@ -13,6 +13,7 @@ import io.javalin.Javalin;
 import service.Usuario.RegistroService;
 import service.Usuario.LoginService;
 import service.Usuario.JWTTokenService;
+import service.Usuario.RoleService;
 
 public class ApiController {
     public ApiController(){
@@ -20,7 +21,8 @@ public class ApiController {
 
         UsuarioRepository usuarioRepository = new UsuarioRepository(new UsuarioDAO());
         JWTTokenService jwtTokenService = new JWTTokenService("Vitor",  usuarioRepository);
-        RegistroService registroService = new RegistroService(usuarioRepository);
+        RoleService roleService = new RoleService();
+        RegistroService registroService = new RegistroService(usuarioRepository, roleService);
         LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
 
         LikeDAO likeDAO = new LikeDAO();
@@ -29,7 +31,10 @@ public class ApiController {
         AnuncioRepository anuncioRepository = new AnuncioRepository(
                 anuncioDAO,
                 likeDAO, deslikeDAO);
-        AnuncioService anuncioService = new AnuncioService(anuncioRepository, usuarioRepository);
+        AnuncioService anuncioService = new AnuncioService(
+                anuncioRepository,
+                usuarioRepository,
+                roleService);
         FeedBackService feedBackService = new FeedBackService(
                 new AvaliacaoAnuncioRepository(likeDAO, deslikeDAO),
                 anuncioRepository,
