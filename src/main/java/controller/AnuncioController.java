@@ -11,7 +11,7 @@ public class AnuncioController {
     private final AnuncioService anuncioService;
     private final FeedBackService feedBackService;
 
-    protected AnuncioController(
+    AnuncioController(
             AnuncioService anuncioService,
             FeedBackService feedBackService
     ) {
@@ -19,13 +19,13 @@ public class AnuncioController {
         this.feedBackService = feedBackService;
     }
 
-    protected void criarAnuncio(Context context){
+    void criarAnuncio(Context context){
         AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
         anuncioService.verificarCriacaoAnuncio(anuncioDTO);
         anuncioService.criarAnuncio(anuncioDTO);
     }
 
-    protected void likeAnuncio(Context context){
+    void likeAnuncio(Context context){
         AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
 
         try{
@@ -37,7 +37,7 @@ public class AnuncioController {
         }
     }
 
-    protected void deslikeAnuncio(Context context){
+    void deslikeAnuncio(Context context){
         AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
 
         try{
@@ -48,7 +48,7 @@ public class AnuncioController {
         }
     }
 
-    protected void lerAnuncioPeloId(Context context){
+    void lerAnuncioPeloId(Context context){
         int id;
 
         try{
@@ -66,7 +66,7 @@ public class AnuncioController {
         }
     }
 
-    protected void lerAnuncioPeloTitulo(Context context){
+    void lerAnuncioPeloTitulo(Context context){
         String titulo;
 
         try{

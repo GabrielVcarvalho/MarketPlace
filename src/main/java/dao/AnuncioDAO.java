@@ -62,7 +62,8 @@ public class AnuncioDAO {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()) return new AnuncioEntity(resultSet.getInt(1),
+            if(resultSet.next()) return new AnuncioEntity(
+                    resultSet.getInt(1),
                     resultSet.getInt(2),
                     resultSet.getString(3),
                     resultSet.getString(4));
@@ -85,7 +86,8 @@ public class AnuncioDAO {
             preparedStatement.setString(1, titulo);
             resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next()) return new AnuncioEntity(resultSet.getInt("id"),
+            if(resultSet.next()) return new AnuncioEntity(
+                    resultSet.getInt("id"),
                     resultSet.getInt("vendedor"),
                     resultSet.getString("titulo"),
                     resultSet.getString("descricao"));
