@@ -4,7 +4,6 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UserRepository;
 import service.Usuario.Exceptions.EmailUserAlreadyUsed;
-import service.Exceptions.InvalidRole;
 import service.Usuario.Exceptions.NameUserAlreadyExists;
 
 public class RegistroService {

@@ -2,30 +2,43 @@ package service.Anuncio;
 
 import dto.AnuncioDTO;
 import model.AnuncioEntity;
+import model.UsuarioEntity;
 import repository.AdRepository;
 import repository.UserRepository;
 import service.Anuncio.Exceptions.AnuncioIdNotExists;
 import service.Anuncio.Exceptions.InvalidSellerId;
 import service.Anuncio.Exceptions.TitleOfAdAlreadyExists;
 import service.Anuncio.Exceptions.TitleOfAdNotExits;
+import service.Usuario.Exceptions.UnauthorizedRole;
+import service.Usuario.Role;
+import service.Usuario.RoleMagenementService;
+import service.Usuario.RoleService;
 
 public class AnuncioService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
+    private final RoleMagenementService roleMagenementService;
 
     public AnuncioService(
             AdRepository adRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            RoleMagenementService roleMagenementService
     ) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
+        this.roleMagenementService = roleMagenementService;
     }
 
     public void verificarCriacaoAnuncio(AnuncioDTO anuncioDTO){
         verificarCamposVazios(anuncioDTO.getIdVendedor(), anuncioDTO.getTitulo(), anuncioDTO.getDescricao());
 
-        if(userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor()) == null)
+        UsuarioEntity usuario = userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor());
+
+        if(usuario == null)
             throw new InvalidSellerId();
+
+        if(!roleMagenementService.isAuthorizedRole(usuario.getRole(), Role.VENDEDOR))
+            throw new UnauthorizedRole("Role não autorizada");
 
         if(adRepository.lerAnuncioPeloNome(anuncioDTO.toEntity().getTitulo()) != null)
             throw new TitleOfAdAlreadyExists();
