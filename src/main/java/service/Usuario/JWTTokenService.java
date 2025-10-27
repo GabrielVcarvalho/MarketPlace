@@ -2,7 +2,6 @@ package service.Usuario;
 
 import model.UsuarioEntity;
 import repository.UserRepository;
-import service.TokenService;
 import service.Usuario.Exceptions.InvalidUserToken;
 import service.Usuario.Exceptions.NameUserNotExists;
 import com.auth0.jwt.JWT;

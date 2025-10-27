@@ -20,11 +20,4 @@ public class VerificacaoUtils{
      static boolean emailUserAlredyExist(UserRepository userRepository, String email){
         return userRepository.lerUsuarioPorEmail(email) != null;
     }
-
-     static boolean isValidRole(String role){
-        if(role != null){
-            return role.equalsIgnoreCase("cliente")
-                    || role.equalsIgnoreCase("vendedor");
-        }else return false;
-    }
 }

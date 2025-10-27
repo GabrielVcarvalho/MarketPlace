@@ -2,7 +2,6 @@ package service.Usuario;
 
 import dto.UsuarioDTO;
 import repository.UserRepository;
-import service.TokenService;
 import service.Usuario.Exceptions.EmailNotInUse;
 import service.Usuario.Exceptions.NameUserNotExists;
 import service.Usuario.Exceptions.WrongPassword;

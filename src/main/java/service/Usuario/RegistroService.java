@@ -4,14 +4,19 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UserRepository;
 import service.Usuario.Exceptions.EmailUserAlreadyUsed;
-import service.Usuario.Exceptions.InvalidRole;
+import service.Exceptions.InvalidRole;
 import service.Usuario.Exceptions.NameUserAlreadyExists;
 
 public class RegistroService {
-    final private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleMagenementService roleMagenementService;
 
-    public RegistroService(UserRepository userRepository) {
+    public RegistroService(
+            UserRepository userRepository,
+            RoleMagenementService roleMagenementService
+    ) {
         this.userRepository = userRepository;
+        this.roleMagenementService = roleMagenementService;
     }
 
     public void registrar(UsuarioDTO usuarioDTO){
@@ -22,7 +27,7 @@ public class RegistroService {
     public void verificarRegistroUsuario(UsuarioDTO usuarioDTO){
         VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getSenha());
 
-        if (!VerificacaoUtils.isValidRole(usuarioDTO.getRole()))
+        if (!roleMagenementService.isValidRole(usuarioDTO.getRole()))
             throw new InvalidRole();
 
         if (VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome()))
