@@ -1,4 +1,4 @@
-package service.Usuario;
+package service.usuario;
 
 import java.util.HashMap;
 

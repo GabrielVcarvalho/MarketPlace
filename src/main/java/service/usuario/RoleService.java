@@ -1,4 +1,6 @@
-package service.Usuario;
+package service.usuario;
+
+import service.usuario.exceptions.InvalidRole;
 
 import java.util.Arrays;
 

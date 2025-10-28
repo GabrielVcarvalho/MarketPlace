@@ -1,11 +1,15 @@
 package controller;
 
 import dto.AnuncioDTO;
-import service.Anuncio.AnuncioService;
-import service.Anuncio.Exceptions.AnuncioIdNotExists;
-import service.Anuncio.Exceptions.TitleOfAdNotExits;
-import service.Anuncio.FeedBackService;
+import io.javalin.http.UnauthorizedResponse;
+import service.anuncio.AnuncioService;
+import service.anuncio.exceptions.AnuncioIdNotExists;
+import service.anuncio.exceptions.InvalidSellerId;
+import service.anuncio.exceptions.TitleOfAdNotExits;
+import service.anuncio.FeedBackService;
 import io.javalin.http.Context;
+import service.usuario.exceptions.InvalidRole;
+import service.usuario.exceptions.UnauthorizedRole;
 
 public class AnuncioController {
     private final AnuncioService anuncioService;
@@ -21,7 +25,22 @@ public class AnuncioController {
 
     void criarAnuncio(Context context){
         AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
-        anuncioService.verificarCriacaoAnuncio(anuncioDTO);
+
+        try{
+            anuncioService.verificarCriacaoAnuncio(anuncioDTO);
+        }
+        catch (InvalidSellerId e){
+            context.status(400).result(e.getMessage());
+            return;
+        }
+        catch (InvalidRole | UnauthorizedRole e){
+            throw new UnauthorizedResponse(e.getMessage());
+        }
+        catch (TitleOfAdNotExits e){
+            context.status(404).result(e.getMessage());
+            return;
+        }
+
         anuncioService.criarAnuncio(anuncioDTO);
     }
 

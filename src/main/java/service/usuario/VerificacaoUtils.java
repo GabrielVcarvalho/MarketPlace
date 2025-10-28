@@ -1,9 +1,9 @@
-package service.Usuario;
+package service.usuario;
 
 import repository.UserRepository;
-import service.Usuario.Exceptions.EmptyEmail;
-import service.Usuario.Exceptions.EmptyName;
-import service.Usuario.Exceptions.EmptyPassword;
+import service.usuario.exceptions.EmptyEmail;
+import service.usuario.exceptions.EmptyName;
+import service.usuario.exceptions.EmptyPassword;
 
 public class VerificacaoUtils{
     static boolean verificarCamposVazios(String nome, String email, String senha){

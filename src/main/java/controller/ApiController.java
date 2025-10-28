@@ -7,13 +7,13 @@ import dao.UsuarioDAO;
 import repository.AnuncioRepository;
 import repository.AvaliacaoAnuncioRepository;
 import repository.UsuarioRepository;
-import service.Anuncio.AnuncioService;
-import service.Anuncio.FeedBackService;
+import service.anuncio.AnuncioService;
+import service.anuncio.FeedBackService;
 import io.javalin.Javalin;
-import service.Usuario.RegistroService;
-import service.Usuario.LoginService;
-import service.Usuario.JWTTokenService;
-import service.Usuario.RoleService;
+import service.usuario.RegistroService;
+import service.usuario.LoginService;
+import service.usuario.JWTTokenService;
+import service.usuario.RoleService;
 
 public class ApiController {
     public ApiController(){
@@ -30,7 +30,9 @@ public class ApiController {
         AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
         AnuncioRepository anuncioRepository = new AnuncioRepository(
                 anuncioDAO,
-                likeDAO, deslikeDAO);
+                likeDAO,
+                deslikeDAO
+        );
         AnuncioService anuncioService = new AnuncioService(
                 anuncioRepository,
                 usuarioRepository,

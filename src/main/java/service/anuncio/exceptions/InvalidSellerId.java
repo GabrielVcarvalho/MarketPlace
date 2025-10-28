@@ -1,4 +1,4 @@
-package service.Anuncio.Exceptions;
+package service.anuncio.exceptions;
 
 public class InvalidSellerId extends RuntimeException {
     public InvalidSellerId() {

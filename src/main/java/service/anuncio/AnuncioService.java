@@ -1,18 +1,17 @@
-package service.Anuncio;
+package service.anuncio;
 
 import dto.AnuncioDTO;
 import model.AnuncioEntity;
 import model.UsuarioEntity;
 import repository.AdRepository;
 import repository.UserRepository;
-import service.Anuncio.Exceptions.AnuncioIdNotExists;
-import service.Anuncio.Exceptions.InvalidSellerId;
-import service.Anuncio.Exceptions.TitleOfAdAlreadyExists;
-import service.Anuncio.Exceptions.TitleOfAdNotExits;
-import service.Usuario.Exceptions.UnauthorizedRole;
-import service.Usuario.Role;
-import service.Usuario.RoleMagenementService;
-import service.Usuario.RoleService;
+import service.anuncio.exceptions.AnuncioIdNotExists;
+import service.anuncio.exceptions.InvalidSellerId;
+import service.anuncio.exceptions.TitleOfAdAlreadyExists;
+import service.anuncio.exceptions.TitleOfAdNotExits;
+import service.usuario.exceptions.UnauthorizedRole;
+import service.usuario.Role;
+import service.usuario.RoleMagenementService;
 
 public class AnuncioService {
     private final AdRepository adRepository;

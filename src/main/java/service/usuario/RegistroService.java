@@ -1,10 +1,11 @@
-package service.Usuario;
+package service.usuario;
 
 import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UserRepository;
-import service.Usuario.Exceptions.EmailUserAlreadyUsed;
-import service.Usuario.Exceptions.NameUserAlreadyExists;
+import service.usuario.exceptions.EmailUserAlreadyUsed;
+import service.usuario.exceptions.InvalidRole;
+import service.usuario.exceptions.NameUserAlreadyExists;
 
 public class RegistroService {
     private final UserRepository userRepository;

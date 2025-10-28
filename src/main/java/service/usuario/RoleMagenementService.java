@@ -1,4 +1,4 @@
-package service.Usuario;
+package service.usuario;
 
 public interface RoleMagenementService {
     public boolean isValidRole(String role);

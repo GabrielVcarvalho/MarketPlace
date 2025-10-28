@@ -1,4 +1,4 @@
-package service.Anuncio.Exceptions;
+package service.anuncio.exceptions;
 
 public class AnuncioIdNotExists extends RuntimeException {
     public AnuncioIdNotExists(String message) {

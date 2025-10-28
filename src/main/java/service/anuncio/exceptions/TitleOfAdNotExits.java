@@ -1,4 +1,4 @@
-package service.Anuncio.Exceptions;
+package service.anuncio.exceptions;
 
 public class TitleOfAdNotExits extends RuntimeException {
     public TitleOfAdNotExits(String message) {

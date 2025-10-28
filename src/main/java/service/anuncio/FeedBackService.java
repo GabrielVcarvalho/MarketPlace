@@ -1,10 +1,10 @@
-package service.Anuncio;
+package service.anuncio;
 
 import repository.AdRepository;
 import repository.FeedBackRepository;
 import repository.UserRepository;
-import service.Anuncio.Exceptions.AdNotExists;
-import service.Anuncio.Exceptions.InvalidSellerId;
+import service.anuncio.exceptions.AdNotExists;
+import service.anuncio.exceptions.InvalidSellerId;
 
 public class FeedBackService {
     private final FeedBackRepository feedBackRepository;

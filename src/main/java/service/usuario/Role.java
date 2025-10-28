@@ -1,4 +1,4 @@
-package service.Usuario;
+package service.usuario;
 
 public enum Role {
     CLIENTE,

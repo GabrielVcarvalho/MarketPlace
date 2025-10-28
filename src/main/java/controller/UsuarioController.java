@@ -1,9 +1,9 @@
 package controller;
 
 import dto.UsuarioDTO;
-import service.Usuario.JWTTokenService;
-import service.Usuario.LoginService;
-import service.Usuario.RegistroService;
+import service.usuario.JWTTokenService;
+import service.usuario.LoginService;
+import service.usuario.RegistroService;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 

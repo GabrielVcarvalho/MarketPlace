@@ -1,4 +1,4 @@
-package service.Usuario.Exceptions;
+package service.usuario.exceptions;
 
 public class EmailNotInUse extends RuntimeException {
     public EmailNotInUse() {
