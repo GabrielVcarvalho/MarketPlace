@@ -1,7 +1,9 @@
 package service.usuario;
 
+import dto.DTOUtils;
 import dto.UsuarioDTO;
 import repository.UserRepository;
+import service.exceptions.NullDTO;
 import service.usuario.exceptions.EmailNotInUse;
 import service.usuario.exceptions.NameUserNotExists;
 import service.usuario.exceptions.WrongPassword;
@@ -16,10 +18,16 @@ public class LoginService {
     }
 
     public String login(UsuarioDTO usuarioDTO){
+        if(DTOUtils.isNull(usuarioDTO))
+            throw new NullDTO("O corpo da requisição está vazio");
+
         return tokenService.criarToken(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
     }
 
     public void verificarLoginUsuario(UsuarioDTO usuarioDTO){
+        if(DTOUtils.isNull(usuarioDTO))
+            throw new NullDTO("O corpo da requisição está vazio");
+
         VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
 
         if (!VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome()))
@@ -33,6 +41,9 @@ public class LoginService {
     }
 
     private boolean isCorrectPassword(UsuarioDTO usuarioDTO){
+        if(DTOUtils.isNull(usuarioDTO))
+            throw new NullDTO("O corpo da requisição está vazio");
+
         return userRepository.lerUsuarioPorNome(usuarioDTO.getNome()).getSenha().equals(usuarioDTO.getSenha());
     }
 }

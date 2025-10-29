@@ -5,6 +5,7 @@ import model.AnuncioEntity;
 import model.UsuarioEntity;
 import repository.AdRepository;
 import repository.UserRepository;
+import dto.DTOUtils;
 import service.anuncio.exceptions.AnuncioIdNotExists;
 import service.anuncio.exceptions.InvalidSellerId;
 import service.anuncio.exceptions.TitleOfAdAlreadyExists;
@@ -89,7 +90,7 @@ public class AnuncioService {
     }
 
     private void verificarAnuncioDTO(AnuncioDTO anuncioDTO){
-        if (anuncioDTO == null)
+        if(DTOUtils.isNull(anuncioDTO))
             throw new NullDTO("O corpo da requisição está vazio");
 
         verificarCamposVazios(

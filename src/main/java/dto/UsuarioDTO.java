@@ -1,6 +1,6 @@
 package dto;
 
-public class UsuarioDTO {
+public class UsuarioDTO  extends DTO{
     private String nome;
     private String email;
     private String senha;

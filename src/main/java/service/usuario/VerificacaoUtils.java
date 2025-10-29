@@ -6,6 +6,11 @@ import service.usuario.exceptions.EmptyName;
 import service.usuario.exceptions.EmptyPassword;
 
 public class VerificacaoUtils{
+    //Private para que não dê para instanciar
+    private VerificacaoUtils() {
+
+    }
+
     static boolean verificarCamposVazios(String nome, String email, String senha){
         if (nome == null || nome.isBlank())
             throw new EmptyName();

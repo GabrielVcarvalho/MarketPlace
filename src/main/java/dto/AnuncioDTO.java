@@ -2,7 +2,7 @@ package dto;
 
 import model.AnuncioEntity;
 
-public class AnuncioDTO {
+public class AnuncioDTO extends DTO{
     private int id;
     private int idVendedor;
     private String titulo;
