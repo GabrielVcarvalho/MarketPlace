@@ -28,6 +28,7 @@ public class UsuarioController {
         UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
         registroService.verificarRegistroUsuario(usuarioDTO);
         registroService.registrar(usuarioDTO);
+        context.status(201);
     }
 
     void login(Context context){

@@ -9,6 +9,7 @@ import service.anuncio.exceptions.AnuncioIdNotExists;
 import service.anuncio.exceptions.InvalidSellerId;
 import service.anuncio.exceptions.TitleOfAdAlreadyExists;
 import service.anuncio.exceptions.TitleOfAdNotExits;
+import service.exceptions.NullDTO;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
 import service.usuario.RoleMagenementService;
@@ -29,7 +30,7 @@ public class AnuncioService {
     }
 
     public void verificarCriacaoAnuncio(AnuncioDTO anuncioDTO){
-        verificarCamposVazios(anuncioDTO.getIdVendedor(), anuncioDTO.getTitulo(), anuncioDTO.getDescricao());
+        verificarAnuncioDTO(anuncioDTO);
 
         UsuarioEntity usuario = userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor());
 
@@ -85,6 +86,16 @@ public class AnuncioService {
                 from.getDescricao(),
                 from.getLikes(),
                 from.getDeslikes());
+    }
+
+    private void verificarAnuncioDTO(AnuncioDTO anuncioDTO){
+        if (anuncioDTO == null)
+            throw new NullDTO("O corpo da requisição está vazio");
+
+        verificarCamposVazios(
+                anuncioDTO.getId(),
+                anuncioDTO.getTitulo(),
+                anuncioDTO.getDescricao());
     }
 
     private void verificarCamposVazios(int id, String titulo, String descricao){
