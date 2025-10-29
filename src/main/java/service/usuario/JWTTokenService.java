@@ -45,7 +45,8 @@ public class JWTTokenService implements TokenService {
             camposUsuario.put("email", jwt.getClaim("email").asString());
             camposUsuario.put("role", jwt.getClaim("role").asString());
             return  camposUsuario;
-        }catch (JWTVerificationException e){
+        }
+        catch (JWTVerificationException e){
             throw new InvalidUserToken();
         }
     }
@@ -59,7 +60,10 @@ public class JWTTokenService implements TokenService {
 
         VerificacaoUtils.verificarCamposVazios(nome, email, role);
         usuario = userRepository.lerUsuarioPorNome(nome);
-        if(usuario == null) throw new NameUserNotExists();
+
+        if(usuario == null)
+            throw new NameUserNotExists();
+
         if(!usuario.getNome().equalsIgnoreCase(nome)
                 || !usuario.getEmail().equalsIgnoreCase(email)
                 || !usuario.getRole().equalsIgnoreCase(role)) throw new InvalidUserToken();
