@@ -116,4 +116,9 @@ public class AnuncioController {
                     .result(e.getMessage());
         }
     }
+
+    void lerTodosOsAnuncios(Context context){
+        context.json(anuncioService.lerTodosOsAnuncios());
+        context.status(200);
+    }
 }

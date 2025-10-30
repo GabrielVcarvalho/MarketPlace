@@ -43,7 +43,8 @@ public class UsuarioRepository implements UserRepository {
     @Override
     public ArrayList<UsuarioEntity> lerUsuarios() {
         java.util.ArrayList<UsuarioEntity> usuarioEntities = usuarioDAO.readUsuarios();
-        if (!usuarioEntities.isEmpty()) return usuarioEntities;
+        if (!usuarioEntities.isEmpty())
+            return usuarioEntities;
         else return null;
     }
 }

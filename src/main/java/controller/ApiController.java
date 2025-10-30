@@ -10,10 +10,7 @@ import repository.UsuarioRepository;
 import service.anuncio.AnuncioService;
 import service.anuncio.FeedBackService;
 import io.javalin.Javalin;
-import service.usuario.RegistroService;
-import service.usuario.LoginService;
-import service.usuario.JWTTokenService;
-import service.usuario.RoleService;
+import service.usuario.*;
 
 public class ApiController {
     public ApiController(){
@@ -24,6 +21,7 @@ public class ApiController {
         RoleService roleService = new RoleService();
         RegistroService registroService = new RegistroService(usuarioRepository, roleService);
         LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
+        LeituraService leituraService = new LeituraService(usuarioRepository, roleService);
 
         LikeDAO likeDAO = new LikeDAO();
         DeslikeDAO deslikeDAO = new DeslikeDAO();
@@ -46,7 +44,8 @@ public class ApiController {
         UsuarioController usuarioController = new UsuarioController(
                 registroService,
                 jwtTokenService,
-                loginService
+                loginService,
+                leituraService
         );
 
         AnuncioController anuncioController = new AnuncioController(
@@ -61,6 +60,10 @@ public class ApiController {
         api.before("/usuario/*", usuarioController::verificarTokenUsuario);
 
         api.post("/usuario/vendedor/criarAnuncio", anuncioController::criarAnuncio);
+
+        api.post("/usuario/lerTodosOsUsuarios", usuarioController::lerTodosOsUsuarios);
+
+        api.get("/usuario/lerTodosOsAnuncio", anuncioController::lerTodosOsAnuncios);
 
         api.get("usuario/buscarAnuncioPorId/{id}", anuncioController::lerAnuncioPeloId);
 

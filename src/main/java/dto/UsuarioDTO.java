@@ -1,6 +1,7 @@
 package dto;
 
 public class UsuarioDTO  extends DTO{
+    int id;
     private String nome;
     private String email;
     private String senha;
@@ -8,6 +9,14 @@ public class UsuarioDTO  extends DTO{
 
     public UsuarioDTO() {
 
+    }
+
+    public UsuarioDTO(int id, String nome, String email, String senha, String role) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
     }
 
     public String getNome() {

@@ -14,6 +14,8 @@ import service.exceptions.NullDTO;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
 import service.usuario.contracts.RoleMagenementService;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class AnuncioService {
     private final AdRepository adRepository;
@@ -71,6 +73,13 @@ public class AnuncioService {
             throw new AnuncioIdNotExists("O anuncio informado não existe");
 
         return toDTO(anuncio);
+    }
+
+    public ArrayList<AnuncioDTO> lerTodosOsAnuncios(){
+        return adRepository.lerTodosOsAnuncios()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toCollection(ArrayList<AnuncioDTO>::new));
     }
 
     //Tirado de dentro da entity para não dar responsibilidades demais a parte mais interna do código

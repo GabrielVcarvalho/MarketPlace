@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 public class RoleService implements RoleMagenementService {
 
+    //Não recebe DTOs pois não é usado na camada CONTROLLER
+
     @Override
     public boolean isValidRole(String role){
         verifyNullOrEmptyRole(role);

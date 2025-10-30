@@ -3,6 +3,7 @@ package controller;
 import dto.UsuarioDTO;
 import service.exceptions.NullDTO;
 import service.usuario.JWTTokenService;
+import service.usuario.LeituraService;
 import service.usuario.LoginService;
 import service.usuario.RegistroService;
 import io.javalin.http.Context;
@@ -15,15 +16,18 @@ public class UsuarioController {
     private final RegistroService registroService;
     private final JWTTokenService jwtTokenService;
     private final LoginService loginService;
+    private final LeituraService leituraService;
 
     UsuarioController(
             RegistroService registroService,
             JWTTokenService jwtTokenService,
-            LoginService loginService
+            LoginService loginService,
+            LeituraService leituraService
     ) {
         this.registroService = registroService;
         this.jwtTokenService = jwtTokenService;
         this.loginService = loginService;
+        this.leituraService = leituraService;
     }
 
     //Vou quebrar mais os catchs para melhorar a legibilidade
@@ -100,6 +104,19 @@ public class UsuarioController {
         }
         catch (InvalidUserToken e){
             throw new UnauthorizedResponse();
+        }
+    }
+
+    void lerTodosOsUsuarios(Context context){
+        try{
+            UsuarioDTO usuarioDTO = context.bodyAsClass(UsuarioDTO.class);
+            context.json(leituraService.lerTodosOsUsuarios(usuarioDTO));
+            context.status(200);
+        }catch (NullDTO e){
+            context.status(400)
+                    .result(e.getMessage());
+        }catch (UnauthorizedRole e){
+            throw new UnauthorizedResponse(e.getMessage());
         }
     }
 }
