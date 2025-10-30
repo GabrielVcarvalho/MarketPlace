@@ -1,10 +1,11 @@
 package service.usuario;
 
+import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.InvalidRole;
 
 import java.util.Arrays;
 
-public class RoleService implements RoleMagenementService{
+public class RoleService implements RoleMagenementService {
 
     @Override
     public boolean isValidRole(String role){
@@ -15,7 +16,9 @@ public class RoleService implements RoleMagenementService{
     @Override
     public boolean isAuthorizedRole(String userRole, Role validRole) {
         verifyNullOrEmptyRole(userRole);
-        return userRole.equalsIgnoreCase(validRole.name());
+
+        return userRole.equalsIgnoreCase(Role.ADMIN.name())
+                || userRole.equalsIgnoreCase(validRole.name());
     }
 
     private void verifyNullOrEmptyRole(String role){

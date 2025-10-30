@@ -2,8 +2,9 @@ package repository;
 
 import dao.DeslikeDAO;
 import dao.LikeDAO;
+import repository.contracts.FeedBackRepository;
 
-public class AvaliacaoAnuncioRepository implements FeedBackRepository{
+public class AvaliacaoAnuncioRepository implements FeedBackRepository {
     private final LikeDAO likeDAO;
     private final DeslikeDAO deslikeDAO;
 

@@ -1,4 +1,4 @@
-package service.usuario;
+package service.usuario.contracts;
 
 import java.util.HashMap;
 

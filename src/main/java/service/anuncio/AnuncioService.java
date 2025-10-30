@@ -3,8 +3,8 @@ package service.anuncio;
 import dto.AnuncioDTO;
 import model.AnuncioEntity;
 import model.UsuarioEntity;
-import repository.AdRepository;
-import repository.UserRepository;
+import repository.contracts.AdRepository;
+import repository.contracts.UserRepository;
 import dto.DTOUtils;
 import service.anuncio.exceptions.AnuncioIdNotExists;
 import service.anuncio.exceptions.InvalidSellerId;
@@ -13,7 +13,7 @@ import service.anuncio.exceptions.TitleOfAdNotExits;
 import service.exceptions.NullDTO;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
-import service.usuario.RoleMagenementService;
+import service.usuario.contracts.RoleMagenementService;
 
 public class AnuncioService {
     private final AdRepository adRepository;

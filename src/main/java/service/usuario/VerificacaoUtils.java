@@ -1,6 +1,6 @@
 package service.usuario;
 
-import repository.UserRepository;
+import repository.contracts.UserRepository;
 import service.usuario.exceptions.EmptyEmail;
 import service.usuario.exceptions.EmptyName;
 import service.usuario.exceptions.EmptyPassword;

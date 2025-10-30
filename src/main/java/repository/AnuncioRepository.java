@@ -4,6 +4,7 @@ import dao.AnuncioDAO;
 import dao.DeslikeDAO;
 import dao.LikeDAO;
 import model.AnuncioEntity;
+import repository.contracts.AdRepository;
 
 import java.util.ArrayList;
 

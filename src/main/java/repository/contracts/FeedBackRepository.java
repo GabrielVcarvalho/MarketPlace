@@ -1,4 +1,4 @@
-package repository;
+package repository.contracts;
 
 public interface FeedBackRepository {
     public void adicionarLike(int idAnuncio, int idUsuario);

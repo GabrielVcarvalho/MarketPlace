@@ -2,9 +2,9 @@ package service.anuncio;
 
 import dto.AvaliacaoDTO;
 import dto.DTOUtils;
-import repository.AdRepository;
-import repository.FeedBackRepository;
-import repository.UserRepository;
+import repository.contracts.AdRepository;
+import repository.contracts.FeedBackRepository;
+import repository.contracts.UserRepository;
 import service.anuncio.exceptions.AdNotExists;
 import service.anuncio.exceptions.InvalidSellerId;
 import service.exceptions.NullDTO;

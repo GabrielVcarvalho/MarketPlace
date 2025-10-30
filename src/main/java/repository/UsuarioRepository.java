@@ -2,10 +2,11 @@ package repository;
 
 import dao.UsuarioDAO;
 import model.UsuarioEntity;
+import repository.contracts.UserRepository;
 
 import java.util.ArrayList;
 
-public class UsuarioRepository implements UserRepository{
+public class UsuarioRepository implements UserRepository {
     private final UsuarioDAO usuarioDAO;
 
     public UsuarioRepository(UsuarioDAO usuarioDAO) {
