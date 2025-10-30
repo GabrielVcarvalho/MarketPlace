@@ -1,10 +1,13 @@
 package service.anuncio;
 
+import dto.AvaliacaoDTO;
+import dto.DTOUtils;
 import repository.AdRepository;
 import repository.FeedBackRepository;
 import repository.UserRepository;
 import service.anuncio.exceptions.AdNotExists;
 import service.anuncio.exceptions.InvalidSellerId;
+import service.exceptions.NullDTO;
 
 public class FeedBackService {
     private final FeedBackRepository feedBackRepository;
@@ -21,24 +24,36 @@ public class FeedBackService {
         this.userRepository = userRepository;
     }
 
-    public void like(int idAnuncio, int idUsuario){
-        verificarIDs(idAnuncio, idUsuario);
-        feedBackRepository.adicionarLike(idAnuncio, idUsuario);
+    public void like(AvaliacaoDTO avaliacaoDTO){
+        if(DTOUtils.isNull(avaliacaoDTO))
+            throw new NullDTO("Requisição vazia");
+
+        verificarIDs(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
+        feedBackRepository.adicionarLike(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
     }
 
-    public void removerLike(int idAnuncio, int idUsuario){
-        verificarIDs(idAnuncio, idUsuario);
-        feedBackRepository.removerLike(idAnuncio, idUsuario);
+    public void removerLike(AvaliacaoDTO avaliacaoDTO){
+        if(DTOUtils.isNull(avaliacaoDTO))
+            throw new NullDTO("Requisição vazia");
+
+        verificarIDs(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
+        feedBackRepository.adicionarLike(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
     }
 
-    public void deslike(int idAnuncio, int idUsuario){
-        verificarIDs(idAnuncio, idUsuario);
-        feedBackRepository.adicinarDeslike(idAnuncio, idUsuario);
+    public void deslike(AvaliacaoDTO avaliacaoDTO){
+        if(DTOUtils.isNull(avaliacaoDTO))
+            throw new NullDTO("Requisição vazia");
+
+        verificarIDs(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
+        feedBackRepository.adicionarLike(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
     }
 
-    public void removerDeslike(int idAnuncio, int idUsuario){
-        verificarIDs(idAnuncio, idUsuario);
-        feedBackRepository.removerDeslike(idAnuncio, idUsuario);
+    public void removerDeslike(AvaliacaoDTO avaliacaoDTO){
+        if(DTOUtils.isNull(avaliacaoDTO))
+            throw new NullDTO("Requisição vazia");
+
+        verificarIDs(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
+        feedBackRepository.adicionarLike(avaliacaoDTO.getIdAnuncio(), avaliacaoDTO.getIdUsuario());
     }
 
     private void verificarIDs(int idAnuncio, int idUsuario){

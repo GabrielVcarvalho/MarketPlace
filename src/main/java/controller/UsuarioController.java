@@ -27,7 +27,6 @@ public class UsuarioController {
     }
 
     //Vou quebrar mais os catchs para melhorar a legibilidade
-
     void registrar(Context context){
         UsuarioDTO usuarioDTO;
 

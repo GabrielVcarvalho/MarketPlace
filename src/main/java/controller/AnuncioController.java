@@ -1,6 +1,8 @@
 package controller;
 
 import dto.AnuncioDTO;
+import dto.AvaliacaoDTO;
+import dto.DTOUtils;
 import io.javalin.http.UnauthorizedResponse;
 import service.anuncio.AnuncioService;
 import service.anuncio.exceptions.AdNotExists;
@@ -30,26 +32,29 @@ public class AnuncioController {
 
         try{
             anuncioService.verificarCriacaoAnuncio(anuncioDTO);
+            anuncioService.criarAnuncio(anuncioDTO);
+            context.status(201);
         }
         catch (InvalidSellerId | TitleOfAdNotExits e){
             context.status(404)
                     .result(e.getMessage());
-            return;
         }
         catch (InvalidRole | UnauthorizedRole e){
             throw new UnauthorizedResponse(e.getMessage());
         }
-
-        anuncioService.criarAnuncio(anuncioDTO);
-        context.status(201);
     }
 
     void likeAnuncio(Context context){
-        AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+        AvaliacaoDTO avaliacaoDTO;
 
         try{
-            feedBackService.like(anuncioDTO.getId(), anuncioDTO.getIdVendedor());
+            avaliacaoDTO = context.bodyAsClass(AvaliacaoDTO.class);
+            feedBackService.like(avaliacaoDTO);
             context.status(200);
+        }
+        catch (NullDTO | IllegalArgumentException e){
+            context.status(400)
+                    .result(e.getMessage());
         }
         catch (AdNotExists | InvalidSellerId e) {
             context.status(404)
@@ -58,11 +63,16 @@ public class AnuncioController {
     }
 
     void deslikeAnuncio(Context context){
-        AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+        AvaliacaoDTO avaliacaoDTO;
 
         try{
-            feedBackService.deslike(anuncioDTO.getId(), anuncioDTO.getIdVendedor());
+            avaliacaoDTO = context.bodyAsClass(AvaliacaoDTO.class);
+            feedBackService.deslike(avaliacaoDTO);
             context.status(200);
+        }
+        catch (NullDTO | IllegalArgumentException e){
+            context.status(400)
+                    .result(e.getMessage());
         }
         catch (AdNotExists | InvalidSellerId e) {
             context.status(404)
@@ -80,7 +90,7 @@ public class AnuncioController {
             context.status(400)
                     .result("O id informado não é um número");
         }
-        catch (IllegalArgumentException | NullDTO e){
+        catch (IllegalArgumentException e){
             context.status(400)
                     .result(e.getMessage());
         }
@@ -97,7 +107,7 @@ public class AnuncioController {
             titulo = context.pathParam("titulo");
             context.json(anuncioService.lerAnuncio(titulo));
         }
-        catch (IllegalArgumentException | NullDTO e){
+        catch (IllegalArgumentException e){
             context.status(400)
                     .result(e.getMessage());
         }
