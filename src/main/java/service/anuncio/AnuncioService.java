@@ -11,6 +11,7 @@ import service.anuncio.exceptions.InvalidSellerId;
 import service.anuncio.exceptions.TitleOfAdAlreadyExists;
 import service.anuncio.exceptions.TitleOfAdNotExits;
 import service.exceptions.NullDTO;
+import service.mapper.AnuncioMapper;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
 import service.usuario.contracts.RoleMagenementService;
@@ -82,20 +83,16 @@ public class AnuncioService {
                 .collect(Collectors.toCollection(ArrayList<AnuncioDTO>::new));
     }
 
-    //Tirado de dentro da entity para não dar responsibilidades demais a parte mais interna do código
+    /*
+    Vou deixar esse método aqui por causa da verificação segura do "verificarCamposVazios"
+    Para evitar a introdução de bugs
+     */
     private AnuncioDTO toDTO(AnuncioEntity from){
         verificarCamposVazios(from.getId(),
                 from.getTitulo(),
                 from.getDescricao());
 
-
-        return new AnuncioDTO(
-                from.getId(),
-                from.getIdVendedor(),
-                from.getTitulo(),
-                from.getDescricao(),
-                from.getLikes(),
-                from.getDeslikes());
+        return AnuncioMapper.toDTO(from);
     }
 
     private void verificarAnuncioDTO(AnuncioDTO anuncioDTO){

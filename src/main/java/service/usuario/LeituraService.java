@@ -5,6 +5,8 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UsuarioRepository;
 import service.exceptions.NullDTO;
+import service.mapper.AnuncioMapper;
+import service.mapper.UsuarioMapper;
 import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.UnauthorizedRole;
 
@@ -34,17 +36,7 @@ public class LeituraService {
         ArrayList<UsuarioEntity> entities = usuarioRepository.lerUsuarios();
 
         return entities.stream()
-                .map(this::toDTO)
+                .map(UsuarioMapper::toDTO)
                 .collect(Collectors.toCollection(ArrayList<UsuarioDTO>::new));
-    }
-
-    private UsuarioDTO toDTO(UsuarioEntity usuario){
-        return new UsuarioDTO (
-                usuario.getId(),
-                usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getSenha(),
-                usuario.getRole()
-        );
     }
 }

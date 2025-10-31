@@ -14,6 +14,14 @@ public class AnuncioDTO extends DTO{
 
     }
 
+    public AnuncioDTO(int idVendedor, String titulo, String descricao, int likes, int deslikes) {
+        this.idVendedor = idVendedor;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.likes = likes;
+        this.deslikes = deslikes;
+    }
+
     public AnuncioDTO(int id, int idVendedor, String titulo, String descricao, int likes, int deslikes) {
         this.id = id;
         this.idVendedor = idVendedor;
