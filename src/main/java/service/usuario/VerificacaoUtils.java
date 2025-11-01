@@ -5,7 +5,7 @@ import service.usuario.exceptions.EmptyEmail;
 import service.usuario.exceptions.EmptyName;
 import service.usuario.exceptions.EmptyPassword;
 
-public class VerificacaoUtils{
+public final class VerificacaoUtils{
     //Private para que não dê para instanciar
     private VerificacaoUtils() {
 

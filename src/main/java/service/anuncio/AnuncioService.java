@@ -22,6 +22,7 @@ public class AnuncioService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
     private final RoleMagenementService roleMagenementService;
+    private final AnuncioMapper anuncioMapper = new AnuncioMapper();
 
     public AnuncioService(
             AdRepository adRepository,
@@ -44,22 +45,22 @@ public class AnuncioService {
         if(!roleMagenementService.isAuthorizedRole(usuario.getRole(), Role.VENDEDOR))
             throw new UnauthorizedRole("Role não autorizada");
 
-        if(adRepository.lerAnuncioPeloNome(anuncioDTO.toEntity().getTitulo()) != null)
+        if(adRepository.lerAnuncioPeloNome(anuncioDTO.getTitulo().toUpperCase()) != null)
             throw new TitleOfAdAlreadyExists();
     }
 
     public void criarAnuncio(AnuncioDTO anuncioDTO){
-        adRepository.criarAnuncio(anuncioDTO.toEntity());
+        adRepository.criarAnuncio(anuncioMapper.convertToEntity());
     }
 
     public AnuncioDTO lerAnuncio(String titulo){
         if(titulo == null || titulo.isBlank())
             throw new IllegalArgumentException("Argumento de título vazio");
 
-        AnuncioEntity anuncio = adRepository.lerAnuncioPeloNome(titulo.toUpperCase());
+        AnuncioEntity anuncio = adRepository.lerAnuncioPeloNome(titulo);
 
         if(anuncio == null)
-            throw new TitleOfAdNotExits("O anuncio informado não existe");
+            throw new AnuncioIdNotExists("O anuncio informado não existe");
 
         return toDTO(anuncio);
     }
@@ -71,7 +72,7 @@ public class AnuncioService {
         AnuncioEntity anuncio = adRepository.lerAnuncioPeloId(id);
 
         if(anuncio == null)
-            throw new AnuncioIdNotExists("O anuncio informado não existe");
+            throw new TitleOfAdNotExits("Não foi possível encontrar anúncio com esse nome");
 
         return toDTO(anuncio);
     }
@@ -92,7 +93,7 @@ public class AnuncioService {
                 from.getTitulo(),
                 from.getDescricao());
 
-        return AnuncioMapper.toDTO(from);
+        return anuncioMapper.convertToDTO(from);
     }
 
     private void verificarAnuncioDTO(AnuncioDTO anuncioDTO){

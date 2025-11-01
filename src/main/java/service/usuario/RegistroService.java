@@ -5,6 +5,7 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.contracts.UserRepository;
 import service.exceptions.NullDTO;
+import service.mapper.UsuarioMapper;
 import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.EmailUserAlreadyUsed;
 import service.usuario.exceptions.InvalidRole;
@@ -26,8 +27,8 @@ public class RegistroService {
         if(DTOUtils.isNull(usuarioDTO))
             throw new NullDTO("O corpo da requisição está vazio");
 
-        userRepository.salvarUsuario(new UsuarioEntity(usuarioDTO.getNome(),
-                usuarioDTO.getEmail(), usuarioDTO.getSenha(), usuarioDTO.getRole()));
+        UsuarioMapper mapper = new UsuarioMapper(usuarioDTO);
+        userRepository.salvarUsuario(mapper.convertToEntity());
     }
 
     public void verificarRegistroUsuario(UsuarioDTO usuarioDTO){

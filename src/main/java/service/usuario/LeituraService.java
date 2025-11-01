@@ -5,7 +5,6 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UsuarioRepository;
 import service.exceptions.NullDTO;
-import service.mapper.AnuncioMapper;
 import service.mapper.UsuarioMapper;
 import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.UnauthorizedRole;
@@ -34,9 +33,10 @@ public class LeituraService {
             throw new UnauthorizedRole("Usuário não autorizado para a ação");
 
         ArrayList<UsuarioEntity> entities = usuarioRepository.lerUsuarios();
+        UsuarioMapper usuarioMapper = new UsuarioMapper();
 
         return entities.stream()
-                .map(UsuarioMapper::toDTO)
+                .map(usuarioMapper::convertToDTO)
                 .collect(Collectors.toCollection(ArrayList<UsuarioDTO>::new));
     }
 }

@@ -2,25 +2,78 @@ package service.mapper;
 
 import dto.AnuncioDTO;
 import model.AnuncioEntity;
+import service.mapper.exceptions.NullMapperObject;
 
 public class AnuncioMapper {
-    public static AnuncioDTO toDTO(AnuncioEntity anuncio){
-        return new AnuncioDTO (
-                anuncio.getId(),
-                anuncio.getIdVendedor(),
-                anuncio.getTitulo(),
-                anuncio.getDescricao(),
-                anuncio.getLikes(),
-                anuncio.getDeslikes()
+
+    private AnuncioEntity anuncioEntity;
+    private AnuncioDTO anuncioDTO;
+
+    public AnuncioMapper() {
+
+    }
+
+    public AnuncioMapper(AnuncioEntity anuncioEntity) {
+        this.anuncioEntity = anuncioEntity;
+    }
+
+    public AnuncioMapper(AnuncioDTO anuncioDTO) {
+        this.anuncioDTO = anuncioDTO;
+    }
+
+    public AnuncioDTO convertToDTO() {
+        if (anuncioEntity == null)
+            throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
+
+        return new AnuncioDTO(
+                anuncioEntity.getId(),
+                anuncioEntity.getIdVendedor(),
+                anuncioEntity.getTitulo(),
+                anuncioEntity.getDescricao(),
+                anuncioEntity.getLikes(),
+                anuncioEntity.getDeslikes()
         );
     }
 
-    public static AnuncioEntity toEntity(AnuncioEntity anuncio){
-        return new AnuncioEntity (
-                anuncio.getId(),
-                anuncio.getIdVendedor(),
-                anuncio.getTitulo(),
-                anuncio.getDescricao()
+    public AnuncioEntity convertToEntity() {
+        if (anuncioDTO == null)
+            throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
+
+        return new AnuncioEntity(
+                anuncioDTO.getId(),
+                anuncioDTO.getIdVendedor(),
+                anuncioDTO.getTitulo(),
+                anuncioDTO.getDescricao(),
+                anuncioDTO.getLikes(),
+                anuncioDTO.getDeslikes()
+        );
+    }
+
+    public AnuncioDTO convertToDTO(AnuncioEntity anuncioEntity) {
+        if (anuncioEntity == null)
+            throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
+
+        return new AnuncioDTO(
+                anuncioEntity.getId(),
+                anuncioEntity.getIdVendedor(),
+                anuncioEntity.getTitulo(),
+                anuncioEntity.getDescricao(),
+                anuncioEntity.getLikes(),
+                anuncioEntity.getDeslikes()
+        );
+    }
+
+    public AnuncioEntity convertToEntity(AnuncioDTO anuncioDTO) {
+        if (anuncioDTO == null)
+            throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
+
+        return new AnuncioEntity(
+                anuncioDTO.getId(),
+                anuncioDTO.getIdVendedor(),
+                anuncioDTO.getTitulo(),
+                anuncioDTO.getDescricao(),
+                anuncioDTO.getLikes(),
+                anuncioDTO.getDeslikes()
         );
     }
 }
