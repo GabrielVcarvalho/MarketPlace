@@ -34,6 +34,16 @@ public class AnuncioEntity {
         this.deslikes = deslikes;
     }
 
+    public AnuncioEntity buildWithId(int id){
+        this.setId(id);
+        return this;
+    }
+
+    public AnuncioEntity buildWithTitulo(String titulo) {
+        this.setTitulo(titulo);
+        return this;
+    }
+
     public int getId() {
         return id;
     }

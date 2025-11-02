@@ -21,7 +21,7 @@ public class AnuncioMapper {
         this.anuncioDTO = anuncioDTO;
     }
 
-    public AnuncioDTO convertToDTO() {
+    public AnuncioDTO convertToDTO() throws NullMapperObject{
         if (anuncioEntity == null)
             throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
 
@@ -35,7 +35,7 @@ public class AnuncioMapper {
         );
     }
 
-    public AnuncioEntity convertToEntity() {
+    public AnuncioEntity convertToEntity() throws NullMapperObject{
         if (anuncioDTO == null)
             throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
 
@@ -49,7 +49,7 @@ public class AnuncioMapper {
         );
     }
 
-    public AnuncioDTO convertToDTO(AnuncioEntity anuncioEntity) {
+    public AnuncioDTO convertToDTO(AnuncioEntity anuncioEntity) throws NullMapperObject{
         if (anuncioEntity == null)
             throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
 
@@ -63,7 +63,7 @@ public class AnuncioMapper {
         );
     }
 
-    public AnuncioEntity convertToEntity(AnuncioDTO anuncioDTO) {
+    public AnuncioEntity convertToEntity(AnuncioDTO anuncioDTO) throws NullMapperObject{
         if (anuncioDTO == null)
             throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
 

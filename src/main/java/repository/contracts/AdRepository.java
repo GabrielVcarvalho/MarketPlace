@@ -9,9 +9,9 @@ public interface AdRepository {
 
     public void removerAnuncio(AnuncioEntity anuncio);
 
-    public AnuncioEntity lerAnuncioPeloId(int id);
+    public AnuncioEntity lerAnuncioPeloId(AnuncioEntity anuncio);
 
-    public AnuncioEntity lerAnuncioPeloNome(String nome);
+    public AnuncioEntity lerAnuncioPeloNome(AnuncioEntity anuncio);
 
     public ArrayList<AnuncioEntity> lerTodosOsAnuncios();
 }

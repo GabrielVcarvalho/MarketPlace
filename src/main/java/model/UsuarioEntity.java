@@ -26,10 +26,14 @@ public class UsuarioEntity {
         this.role = role;
     }
 
-    public static UsuarioEntity buildWithId(int id){
-        UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setId(id);
-        return usuario;
+    public UsuarioEntity buildWithId(int id){
+        this.setId(id);
+        return this;
+    }
+
+    public UsuarioEntity buildWithName(String nome){
+        this.setNome(nome);
+        return this;
     }
 
     public int getId() {
