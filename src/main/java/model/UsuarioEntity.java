@@ -7,6 +7,10 @@ public class UsuarioEntity {
     private String senha;
     private String role;
 
+    public UsuarioEntity() {
+
+    }
+
     public UsuarioEntity(int id, String nome, String email, String senha, String role) {
         this.id = id;
         this.nome = nome;
@@ -20,6 +24,12 @@ public class UsuarioEntity {
         this.email = email;
         this.senha = senha;
         this.role = role;
+    }
+
+    public static UsuarioEntity buildWithId(int id){
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId(id);
+        return usuario;
     }
 
     public int getId() {

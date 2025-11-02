@@ -1,6 +1,7 @@
 package repository;
 
 import dao.UsuarioDAO;
+import model.AnuncioEntity;
 import model.UsuarioEntity;
 import repository.contracts.UserRepository;
 
@@ -20,10 +21,12 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public UsuarioEntity lerUsuarioPorId(int id){
-            model.UsuarioEntity usuario = usuarioDAO.readUsuario(id);
-            if(usuario != null) return usuario;
-            else return null;
+    public UsuarioEntity lerUsuarioPorId(UsuarioEntity usuario){
+            UsuarioEntity usuarioByDTO = usuarioDAO.readUsuario(usuario.getId());
+            if(usuarioByDTO != null)
+                return usuarioByDTO;
+            else
+                return null;
     }
 
     @Override

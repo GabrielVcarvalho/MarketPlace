@@ -6,6 +6,7 @@ import model.UsuarioEntity;
 import repository.contracts.UserRepository;
 import service.exceptions.NullDTO;
 import service.mapper.UsuarioMapper;
+import service.mapper.exceptions.NullMapperObject;
 import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.EmailUserAlreadyUsed;
 import service.usuario.exceptions.InvalidRole;
@@ -24,11 +25,12 @@ public class RegistroService {
     }
 
     public void registrar(UsuarioDTO usuarioDTO){
-        if(DTOUtils.isNull(usuarioDTO))
-            throw new NullDTO("O corpo da requisição está vazio");
-
         UsuarioMapper mapper = new UsuarioMapper(usuarioDTO);
-        userRepository.salvarUsuario(mapper.convertToEntity());
+        try {
+            userRepository.salvarUsuario(mapper.convertToEntity());
+        } catch (NullMapperObject e) {
+            throw new NullDTO("O corpo da requisição está vazio");
+        }
     }
 
     public void verificarRegistroUsuario(UsuarioDTO usuarioDTO){

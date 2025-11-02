@@ -1,6 +1,7 @@
 package service.anuncio;
 
 import dto.AnuncioDTO;
+import dto.UsuarioDTO;
 import model.AnuncioEntity;
 import model.UsuarioEntity;
 import repository.contracts.AdRepository;
@@ -12,6 +13,8 @@ import service.anuncio.exceptions.TitleOfAdAlreadyExists;
 import service.anuncio.exceptions.TitleOfAdNotExits;
 import service.exceptions.NullDTO;
 import service.mapper.AnuncioMapper;
+import service.mapper.UsuarioMapper;
+import service.mapper.exceptions.NullMapperObject;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
 import service.usuario.contracts.RoleMagenementService;
@@ -35,12 +38,23 @@ public class AnuncioService {
     }
 
     public void verificarCriacaoAnuncio(AnuncioDTO anuncioDTO){
+        UsuarioMapper usuarioMapper = new UsuarioMapper();
+
         verificarAnuncioDTO(anuncioDTO);
 
-        UsuarioEntity usuario = userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor());
-
-        if(usuario == null)
+        /*
+        A ideia aqui era fazer com que a camada SERVICE não precise trabalhar com entities;
+        Tornando o código mais padronizado e seguindo um modelo mais uniforme, para que não
+        haja confusão
+         */
+        UsuarioDTO usuario;
+        try{
+            //Encapsulado dentro do bloco try para que não vaze para o resto do programa
+            UsuarioEntity usuarioOutRepository = userRepository.lerUsuarioPorId(UsuarioEntity.buildWithId(anuncioDTO.getIdVendedor()));
+            usuario = usuarioMapper.convertToDTO(usuarioOutRepository);
+        }catch (NullMapperObject e){
             throw new InvalidSellerId();
+        }
 
         if(!roleMagenementService.isAuthorizedRole(usuario.getRole(), Role.VENDEDOR))
             throw new UnauthorizedRole("Role não autorizada");

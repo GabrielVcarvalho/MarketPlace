@@ -20,7 +20,7 @@ public class UsuarioMapper{
         this.usuarioDTO = usuarioDTO;
     }
 
-    public UsuarioDTO convertToDTO(){
+    public UsuarioDTO convertToDTO() throws NullMapperObject{
         if(usuarioEntity == null)
             throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
 
@@ -33,7 +33,7 @@ public class UsuarioMapper{
         );
     }
 
-    public UsuarioEntity convertToEntity(){
+    public UsuarioEntity convertToEntity() throws NullMapperObject{
         if(usuarioDTO == null)
             throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
 
@@ -47,7 +47,7 @@ public class UsuarioMapper{
     }
 
     //Restrinja o uso desses mappers
-    public UsuarioDTO convertToDTO(UsuarioEntity usuarioEntity){
+    public UsuarioDTO convertToDTO(UsuarioEntity usuarioEntity) throws NullMapperObject{
         if(usuarioEntity == null)
             throw new NullMapperObject("Entidade nula, não pôde ser convertida para DTO");
 
@@ -60,7 +60,7 @@ public class UsuarioMapper{
         );
     }
 
-    public UsuarioEntity convertToEntity(UsuarioDTO usuarioDTO){
+    public UsuarioEntity convertToEntity(UsuarioDTO usuarioDTO) throws NullMapperObject{
         if(usuarioDTO == null)
             throw new NullMapperObject("DTO nulo, não pôde ser convertido para entidade");
 
