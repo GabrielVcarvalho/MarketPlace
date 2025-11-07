@@ -2,6 +2,7 @@ package service.usuario;
 
 import dto.DTOUtils;
 import dto.UsuarioDTO;
+import model.UsuarioEntity;
 import repository.contracts.UserRepository;
 import service.exceptions.NullDTO;
 import service.usuario.contracts.TokenService;
@@ -35,22 +36,27 @@ public class LoginService {
         if(DTOUtils.isNull(usuarioDTO))
             throw new NullDTO("O corpo da requisição está vazio");
 
-        VerificacaoUtils.verificarCamposVazios(usuarioDTO.getNome(), usuarioDTO.getEmail(), usuarioDTO.getRole());
+        VerificacaoUtils.verificarCamposVazios(
+                usuarioDTO.getNome(),
+                usuarioDTO.getEmail(),
+                usuarioDTO.getRole());
 
-        if (!VerificacaoUtils.nameUserAlredyExist(userRepository, usuarioDTO.getNome()))
+        UsuarioEntity usuarioOutRepository = userRepository.lerUsuarioPorNome(usuarioDTO.getNome());
+
+        if (!VerificacaoUtils.nameUserAlredyExist(usuarioDTO, usuarioOutRepository))
             throw new NameUserNotExists();
 
-        if (!VerificacaoUtils.emailUserAlredyExist(userRepository, usuarioDTO.getEmail()))
+        if (!VerificacaoUtils.emailUserAlredyExist(usuarioDTO, usuarioOutRepository))
             throw new EmailNotInUse();
 
-        if (!isCorrectPassword(usuarioDTO))
+        if (!isCorrectPassword(usuarioDTO, usuarioOutRepository))
             throw new WrongPassword();
     }
 
-    private boolean isCorrectPassword(UsuarioDTO usuarioDTO){
+    private boolean isCorrectPassword(UsuarioDTO usuarioDTO, UsuarioEntity usuarioEntity){
         if(DTOUtils.isNull(usuarioDTO))
             throw new NullDTO("O corpo da requisição está vazio");
 
-        return userRepository.lerUsuarioPorNome(usuarioDTO.getNome()).getSenha().equals(usuarioDTO.getSenha());
+        return usuarioDTO.getSenha().equalsIgnoreCase(usuarioEntity.getSenha());
     }
 }

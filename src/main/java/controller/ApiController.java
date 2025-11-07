@@ -10,6 +10,8 @@ import repository.UsuarioRepository;
 import service.anuncio.AnuncioService;
 import service.anuncio.FeedBackService;
 import io.javalin.Javalin;
+import service.mapper.AnuncioMapper;
+import service.mapper.UsuarioMapper;
 import service.usuario.*;
 
 public class ApiController {
@@ -19,13 +21,21 @@ public class ApiController {
         UsuarioRepository usuarioRepository = new UsuarioRepository(new UsuarioDAO());
         JWTTokenService jwtTokenService = new JWTTokenService("Vitor",  usuarioRepository);
         RoleService roleService = new RoleService();
-        RegistroService registroService = new RegistroService(usuarioRepository, roleService);
+        UsuarioMapper usuarioMapper = new UsuarioMapper();
+        RegistroService registroService = new RegistroService(
+                usuarioRepository,
+                roleService,
+                usuarioMapper);
         LoginService loginService = new LoginService(usuarioRepository, jwtTokenService);
-        LeituraService leituraService = new LeituraService(usuarioRepository, roleService);
+        LeituraService leituraService = new LeituraService(
+                usuarioRepository,
+                roleService,
+                usuarioMapper);
 
         LikeDAO likeDAO = new LikeDAO();
         DeslikeDAO deslikeDAO = new DeslikeDAO();
         AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
+        AnuncioMapper anuncioMapper = new AnuncioMapper();
         AnuncioRepository anuncioRepository = new AnuncioRepository(
                 anuncioDAO,
                 likeDAO,
@@ -34,7 +44,9 @@ public class ApiController {
         AnuncioService anuncioService = new AnuncioService(
                 anuncioRepository,
                 usuarioRepository,
-                roleService);
+                roleService,
+                anuncioMapper
+        );
         FeedBackService feedBackService = new FeedBackService(
                 new AvaliacaoAnuncioRepository(likeDAO, deslikeDAO),
                 anuncioRepository,
@@ -48,10 +60,7 @@ public class ApiController {
                 leituraService
         );
 
-        AnuncioController anuncioController = new AnuncioController(
-                anuncioService,
-                feedBackService
-        );
+        AnuncioController anuncioController = new AnuncioController(anuncioService, feedBackService);
 
         api.post("/register", usuarioController::registrar);
 
@@ -65,9 +74,9 @@ public class ApiController {
 
         api.get("/usuario/lerTodosOsAnuncio", anuncioController::lerTodosOsAnuncios);
 
-        api.get("usuario/buscarAnuncioPorId/{id}", anuncioController::lerAnuncioPeloId);
+        api.get("usuario/buscarAnuncioPorId", anuncioController::lerAnuncioPeloId);
 
-        api.get("/usuario/buscarAnuncioPorTitulo/{titulo}", anuncioController::lerAnuncioPeloTitulo);
+        api.get("/usuario/buscarAnuncioPorTitulo", anuncioController::lerAnuncioPeloTitulo);
 
         api.post("/usuario/likeAnuncio", anuncioController::likeAnuncio);
 

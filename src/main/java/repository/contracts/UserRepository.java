@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface UserRepository {
     void salvarUsuario(UsuarioEntity usuarioEntity);
 
-    UsuarioEntity lerUsuarioPorId(UsuarioEntity usuario);
+    UsuarioEntity lerUsuarioPorId(int id);
 
     UsuarioEntity lerUsuarioPorNome(String nome);
 

@@ -2,13 +2,9 @@ package controller;
 
 import dto.AnuncioDTO;
 import dto.AvaliacaoDTO;
-import dto.DTOUtils;
 import io.javalin.http.UnauthorizedResponse;
 import service.anuncio.AnuncioService;
-import service.anuncio.exceptions.AdNotExists;
-import service.anuncio.exceptions.AnuncioIdNotExists;
-import service.anuncio.exceptions.InvalidSellerId;
-import service.anuncio.exceptions.TitleOfAdNotExits;
+import service.anuncio.exceptions.*;
 import service.anuncio.FeedBackService;
 import io.javalin.http.Context;
 import service.exceptions.NullDTO;
@@ -82,9 +78,8 @@ public class AnuncioController {
 
     void lerAnuncioPeloId(Context context){
         try{
-            context.json(anuncioService.lerAnuncio(
-                    Integer.parseInt(context.pathParam("id"))
-            ));
+            AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+            context.json(anuncioService.lerAnuncioPeloId(anuncioDTO));
         }
         catch (NumberFormatException e) {
             context.status(400)
@@ -101,11 +96,9 @@ public class AnuncioController {
     }
 
     void lerAnuncioPeloTitulo(Context context){
-        String titulo;
-
         try{
-            titulo = context.pathParam("titulo");
-            context.json(anuncioService.lerAnuncio(titulo));
+            AnuncioDTO anuncioDTO = context.bodyAsClass(AnuncioDTO.class);
+            context.json(anuncioService.lerAnuncioPeloTitulo(anuncioDTO));
         }
         catch (IllegalArgumentException e){
             context.status(400)
@@ -118,7 +111,11 @@ public class AnuncioController {
     }
 
     void lerTodosOsAnuncios(Context context){
-        context.json(anuncioService.lerTodosOsAnuncios());
-        context.status(200);
+        try{
+            anuncioService.lerTodosOsAnuncios();
+        }
+        catch (InternalErrorToConvertToDTO e) {
+            context.status(500);
+        }
     }
 }

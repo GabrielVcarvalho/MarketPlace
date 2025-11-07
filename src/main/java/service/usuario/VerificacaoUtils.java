@@ -1,5 +1,7 @@
 package service.usuario;
 
+import dto.UsuarioDTO;
+import model.UsuarioEntity;
 import repository.contracts.UserRepository;
 import service.usuario.exceptions.EmptyEmail;
 import service.usuario.exceptions.EmptyName;
@@ -24,11 +26,11 @@ public final class VerificacaoUtils{
         return true;
     }
 
-     static boolean nameUserAlredyExist(UserRepository userRepository, String nome){
-        return userRepository.lerUsuarioPorNome(nome) != null;
+     static boolean nameUserAlredyExist(UsuarioDTO usuarioDTO, UsuarioEntity usuarioEntity){
+        return usuarioDTO.getNome().equalsIgnoreCase(usuarioEntity.getNome());
     }
 
-     static boolean emailUserAlredyExist(UserRepository userRepository, String email){
-        return userRepository.lerUsuarioPorEmail(email) != null;
+     static boolean emailUserAlredyExist(UsuarioDTO usuarioDTO, UsuarioEntity usuarioEntity){
+        return usuarioDTO.getEmail().equalsIgnoreCase(usuarioEntity.getEmail());
     }
 }

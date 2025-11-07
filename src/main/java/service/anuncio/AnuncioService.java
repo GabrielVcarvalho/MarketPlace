@@ -1,19 +1,14 @@
 package service.anuncio;
 
 import dto.AnuncioDTO;
-import dto.UsuarioDTO;
 import model.AnuncioEntity;
 import model.UsuarioEntity;
+import service.mapper.contracts.AdMapper;
 import repository.contracts.AdRepository;
 import repository.contracts.UserRepository;
 import dto.DTOUtils;
-import service.anuncio.exceptions.AnuncioIdNotExists;
-import service.anuncio.exceptions.InvalidSellerId;
-import service.anuncio.exceptions.TitleOfAdAlreadyExists;
-import service.anuncio.exceptions.TitleOfAdNotExits;
+import service.anuncio.exceptions.*;
 import service.exceptions.NullDTO;
-import service.mapper.AnuncioMapper;
-import service.mapper.UsuarioMapper;
 import service.mapper.exceptions.NullMapperObject;
 import service.usuario.exceptions.UnauthorizedRole;
 import service.usuario.Role;
@@ -25,55 +20,50 @@ public class AnuncioService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
     private final RoleMagenementService roleMagenementService;
+    private final AdMapper adMapper;
 
     public AnuncioService(
             AdRepository adRepository,
             UserRepository userRepository,
-            RoleMagenementService roleMagenementService
+            RoleMagenementService roleMagenementService,
+            AdMapper adMapper
     ) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
         this.roleMagenementService = roleMagenementService;
+        this.adMapper = adMapper;
     }
 
     public void verificarCriacaoAnuncio(AnuncioDTO anuncioDTO){
-        UsuarioMapper usuarioMapper = new UsuarioMapper();
+        verificarDTONulo(anuncioDTO);
 
-        verificarAnuncioDTO(anuncioDTO);
+        UsuarioEntity usuario;
+        AnuncioEntity adByRepository;
 
-        /*
-        A ideia aqui era fazer com que a camada SERVICE não precise trabalhar com entities;
-        Tornando o código mais padronizado e seguindo um modelo mais uniforme, para que não
-        haja confusão
-         */
-        UsuarioDTO usuario;
-        try{
-            //Encapsulado dentro do bloco try para que não vaze para o resto do programa
-            UsuarioEntity entityBuild = new UsuarioEntity().buildWithId(anuncioDTO.getId());
-            UsuarioEntity usuarioOutRepository = userRepository.lerUsuarioPorId(entityBuild);
-            usuario = usuarioMapper.convertToDTO(usuarioOutRepository);
-        }catch (NullMapperObject e){
+        usuario = userRepository.lerUsuarioPorId(anuncioDTO.getIdVendedor());
+
+        if(usuario == null)
             throw new InvalidSellerId();
-        }
 
         if(!roleMagenementService.isAuthorizedRole(usuario.getRole(), Role.VENDEDOR))
             throw new UnauthorizedRole("Role não autorizada");
 
-        try{
-            anuncioDTO = toDTO(adRepository.lerAnuncioPeloNome(new AnuncioEntity().buildWithTitulo(anuncioDTO.getTitulo())));
-        } catch (NullMapperObject e) {
-            //Catch vazio pois a lógica é tratada logo a baixo
-        }
+        adByRepository = adRepository.lerAnuncioPeloNome(anuncioDTO.getTitulo());
 
-        if(anuncioDTO != null)
+        if(adByRepository != null)
             throw new TitleOfAdAlreadyExists();
     }
 
     public void criarAnuncio(AnuncioDTO anuncioDTO){
-        AnuncioMapper anuncioMapper = new AnuncioMapper(anuncioDTO);
+        verificarCamposVazios(
+                anuncioDTO.getId(),
+                anuncioDTO.getTitulo(),
+                anuncioDTO.getDescricao());
+
         try{
-            adRepository.criarAnuncio(anuncioMapper.convertToEntity());
-        } catch (NullMapperObject e) {
+            adRepository.criarAnuncio(adMapper.convertToEntity(anuncioDTO));
+        }
+        catch (NullMapperObject e) {
             throw new NullDTO("O corpo da requisição é nulo ou inválido");
         }
     }
@@ -83,11 +73,11 @@ public class AnuncioService {
             throw new IllegalArgumentException("Argumento de título vazio");
 
         try{
-            AnuncioEntity DtoForEntity = new AnuncioEntity().buildWithTitulo(anuncioDTO.getTitulo());
-            AnuncioEntity anuncioOutRepository = adRepository.lerAnuncioPeloNome(DtoForEntity);
+            AnuncioEntity anuncioOutRepository = adRepository.lerAnuncioPeloNome(anuncioDTO.getTitulo());
             return toDTO(anuncioOutRepository);
-        }catch (NullMapperObject e){
-            throw new NullDTO("Corpo da requisição é nulo");
+        }
+        catch (NullMapperObject e){
+            throw new TitleOfAdNotExits("Não foi possível encontrar anuncio com esse título");
         }
     }
 
@@ -96,49 +86,36 @@ public class AnuncioService {
             throw new IllegalArgumentException("Argumento de id é nulo ou inválido");
 
         try {
-            AnuncioEntity dtoForEntity = new AnuncioEntity().buildWithId(anuncioDTO.getId());
-            AnuncioEntity anuncioOutRepository = adRepository.lerAnuncioPeloId(dtoForEntity);
+            AnuncioEntity anuncioOutRepository = adRepository.lerAnuncioPeloId(anuncioDTO.getId());
             return toDTO(anuncioOutRepository);
-        } catch (NullMapperObject e) {
-            throw new TitleOfAdNotExits("Não foi possível encontrar um anuncio com esse id");
+        }
+        catch (NullMapperObject e) {
+            throw new AnuncioIdNotExists("Não foi possível encontrar um anuncio com esse id");
         }
     }
 
-    public ArrayList<AnuncioDTO> lerTodosOsAnuncios(){
+    public ArrayList<AnuncioDTO> lerTodosOsAnuncios() throws InternalErrorToConvertToDTO {
             return adRepository.lerTodosOsAnuncios()
             .stream()
-            .map((user) -> {
+            .map((anuncio) -> {
                 try {
-                    return toDTO(user);
+                    return toDTO(anuncio);
                 }
                 catch (NullMapperObject e){
                     //Erro desconhecido
-                    throw new RuntimeException("Erro interno não esperado");
+                    throw new InternalErrorToConvertToDTO("Erro interno não esperado");
                 }
             })
             .collect(Collectors.toCollection(ArrayList<AnuncioDTO>::new));
         }
-    /*
-    Vou deixar esse método aqui por causa da verificação segura do "verificarCamposVazios"
-    Para evitar a introdução de bugs
-     */
-    private AnuncioDTO toDTO(AnuncioEntity from) throws NullMapperObject{
-        final AnuncioMapper anuncioMapper = new AnuncioMapper();
-        verificarCamposVazios(from.getId(),
-                from.getTitulo(),
-                from.getDescricao());
 
-        return anuncioMapper.convertToDTO(from);
+    private AnuncioDTO toDTO(AnuncioEntity from) throws NullMapperObject{
+        return adMapper.convertToDTO(from);
     }
 
-    private void verificarAnuncioDTO(AnuncioDTO anuncioDTO){
+    private void verificarDTONulo(AnuncioDTO anuncioDTO){
         if(DTOUtils.isNull(anuncioDTO))
             throw new NullDTO("O corpo da requisição está vazio");
-
-        verificarCamposVazios(
-                anuncioDTO.getId(),
-                anuncioDTO.getTitulo(),
-                anuncioDTO.getDescricao());
     }
 
     private void verificarCamposVazios(int id, String titulo, String descricao){

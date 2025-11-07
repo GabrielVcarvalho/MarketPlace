@@ -5,7 +5,8 @@ import dto.UsuarioDTO;
 import model.UsuarioEntity;
 import repository.UsuarioRepository;
 import service.exceptions.NullDTO;
-import service.mapper.UsuarioMapper;
+import service.mapper.contracts.UserMapper;
+import service.mapper.exceptions.NullMapperObject;
 import service.usuario.contracts.RoleMagenementService;
 import service.usuario.exceptions.UnauthorizedRole;
 
@@ -15,13 +16,16 @@ import java.util.stream.Collectors;
 public class LeituraService {
     private final UsuarioRepository usuarioRepository;
     private final RoleMagenementService roleMagenementService;
+    private final UserMapper userMapper;
 
     public LeituraService(
             UsuarioRepository usuarioRepository,
-            RoleMagenementService roleMagenementService
+            RoleMagenementService roleMagenementService,
+            UserMapper userMapper
     ) {
         this.usuarioRepository = usuarioRepository;
         this.roleMagenementService = roleMagenementService;
+        this.userMapper = userMapper;
     }
 
     public ArrayList<UsuarioDTO> lerTodosOsUsuarios(UsuarioDTO usuarioDTO){
@@ -33,10 +37,16 @@ public class LeituraService {
             throw new UnauthorizedRole("Usuário não autorizado para a ação");
 
         ArrayList<UsuarioEntity> entities = usuarioRepository.lerUsuarios();
-        UsuarioMapper usuarioMapper = new UsuarioMapper();
 
         return entities.stream()
-                .map(usuarioMapper::convertToDTO)
+                .map((usuario -> {
+                    try{
+                        return userMapper.convertToDTO(usuario);
+                    } catch (NullMapperObject e) {
+                        //Erro não esperado
+                        throw new RuntimeException(e);
+                    }
+                }))
                 .collect(Collectors.toCollection(ArrayList<UsuarioDTO>::new));
     }
 }
