@@ -1,6 +1,7 @@
 package dto;
 
 public class ComentarioDTO extends DTO{
+    private int idComment;
     private int idAuthor;
     private int idAnuncio;
     private String content;
@@ -9,6 +10,21 @@ public class ComentarioDTO extends DTO{
         this.idAuthor = idAuthor;
         this.idAnuncio = idAnuncio;
         this.content = content;
+    }
+
+    public ComentarioDTO(int idComment, int idAuthor, int idAnuncio, String content) {
+        this.idComment = idComment;
+        this.idAuthor = idAuthor;
+        this.idAnuncio = idAnuncio;
+        this.content = content;
+    }
+
+    public int getIdComment() {
+        return idComment;
+    }
+
+    public void setIdComment(int idComment) {
+        this.idComment = idComment;
     }
 
     public int getIdAuthor() {

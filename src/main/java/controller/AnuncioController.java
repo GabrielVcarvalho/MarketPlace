@@ -2,25 +2,32 @@ package controller;
 
 import dto.AnuncioDTO;
 import dto.AvaliacaoDTO;
+import dto.ComentarioDTO;
 import io.javalin.http.UnauthorizedResponse;
 import service.anuncio.AnuncioService;
+import service.anuncio.ComentarioService;
 import service.anuncio.exceptions.*;
 import service.anuncio.FeedBackService;
 import io.javalin.http.Context;
 import service.exceptions.NullDTO;
+import service.exceptions.TriedConvertNullDTOForEntity;
+import service.mapper.exceptions.NullMapperObject;
 import service.usuario.exceptions.InvalidRole;
 import service.usuario.exceptions.UnauthorizedRole;
 
 public class AnuncioController {
     private final AnuncioService anuncioService;
     private final FeedBackService feedBackService;
+    private final ComentarioService comentarioService;
 
-    AnuncioController(
+    public AnuncioController(
             AnuncioService anuncioService,
-            FeedBackService feedBackService
+            FeedBackService feedBackService,
+            ComentarioService comentarioService
     ) {
         this.anuncioService = anuncioService;
         this.feedBackService = feedBackService;
+        this.comentarioService = comentarioService;
     }
 
     void criarAnuncio(Context context){
@@ -106,6 +113,27 @@ public class AnuncioController {
         }
         catch (TitleOfAdNotExits e) {
             context.status(404)
+                    .result(e.getMessage());
+        }
+    }
+
+    void adicionarComentario(Context context){
+        try{
+            ComentarioDTO comentarioDTO = context.bodyAsClass(ComentarioDTO.class);
+            comentarioService.verificarCriacaoComentario(comentarioDTO);
+            comentarioService.criarComentario(comentarioDTO);
+            context.status(200);
+        }
+        catch (NullDTO | NullContentInComment e){
+            context.status(400)
+                    .result(e.getMessage());
+        }
+        catch (AnuncioIdNotExists | UserIdNotExists e){
+            context.status(404)
+                    .result(e.getMessage());
+        }
+        catch (TriedConvertNullDTOForEntity e){
+            context.status(500)
                     .result(e.getMessage());
         }
     }

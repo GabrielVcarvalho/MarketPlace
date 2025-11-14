@@ -8,6 +8,7 @@ import repository.AnuncioRepository;
 import repository.AvaliacaoAnuncioRepository;
 import repository.UsuarioRepository;
 import service.anuncio.AnuncioService;
+import service.anuncio.ComentarioService;
 import service.anuncio.FeedBackService;
 import io.javalin.Javalin;
 import service.mapper.AnuncioMapper;
@@ -60,7 +61,10 @@ public class ApiController {
                 leituraService
         );
 
-        AnuncioController anuncioController = new AnuncioController(anuncioService, feedBackService);
+        AnuncioController anuncioController = new AnuncioController(
+                anuncioService,
+                feedBackService
+        );
 
         api.post("/register", usuarioController::registrar);
 

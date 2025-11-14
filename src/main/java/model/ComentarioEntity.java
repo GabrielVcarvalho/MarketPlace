@@ -1,21 +1,23 @@
 package model;
 
 public class ComentarioEntity {
+    private int idComment;
     private int idAuthor;
+    private int anuncioId;
     private String content;
-    private int likes;
-    private int disLikes;
 
-    public ComentarioEntity(int idAuthor, String content) {
+    public ComentarioEntity(int idAuthor, int anuncioId, String content) {
         this.idAuthor = idAuthor;
+        this.anuncioId = anuncioId;
         this.content = content;
     }
 
-    public ComentarioEntity(int idAuthor, String content, int likes, int disLikes) {
-        this.idAuthor = idAuthor;
-        this.content = content;
-        this.likes = likes;
-        this.disLikes = disLikes;
+    public int getIdComment() {
+        return idComment;
+    }
+
+    public void setIdComment(int idComment) {
+        this.idComment = idComment;
     }
 
     public int getIdAuthor() {
@@ -26,27 +28,19 @@ public class ComentarioEntity {
         this.idAuthor = idAuthor;
     }
 
+    public int getAnuncioId() {
+        return anuncioId;
+    }
+
+    public void setAnuncioId(int anuncioId) {
+        this.anuncioId = anuncioId;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getDisLikes() {
-        return disLikes;
-    }
-
-    public void setDisLikes(int disLikes) {
-        this.disLikes = disLikes;
     }
 }
