@@ -122,7 +122,7 @@ public class AnuncioController {
             ComentarioDTO comentarioDTO = context.bodyAsClass(ComentarioDTO.class);
             comentarioService.verificarCriacaoComentario(comentarioDTO);
             comentarioService.criarComentario(comentarioDTO);
-            context.status(200);
+            context.status(201);
         }
         catch (NullDTO | NullContentInComment e){
             context.status(400)

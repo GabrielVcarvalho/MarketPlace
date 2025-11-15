@@ -21,33 +21,23 @@ public class UsuarioRepository implements UserRepository {
     }
 
     @Override
-    public UsuarioEntity lerUsuarioPorId(UsuarioEntity usuario){
-            UsuarioEntity usuarioByDTO = usuarioDAO.readUsuario(usuario.getId());
-            if(usuarioByDTO != null)
-                return usuarioByDTO;
-            else
-                return null;
+    public UsuarioEntity lerUsuarioPorId(int id){
+        return usuarioDAO.readUsuario(id);
     }
 
     @Override
     public UsuarioEntity lerUsuarioPorNome(String nome){
-            model.UsuarioEntity usuario = usuarioDAO.readUsuarioByName(nome);
-            if(usuario != null) return usuario;
-            else return null;
+            return usuarioDAO.readUsuarioByName(nome);
     }
 
     @Override
     public UsuarioEntity lerUsuarioPorEmail(String email){
-            model.UsuarioEntity usuario = usuarioDAO.readUsuarioByEmail(email);
-            if(usuario != null) return usuario;
-            else return null;
+            return usuarioDAO.readUsuarioByEmail(email);
         }
 
     @Override
     public ArrayList<UsuarioEntity> lerUsuarios() {
         java.util.ArrayList<UsuarioEntity> usuarioEntities = usuarioDAO.readUsuarios();
-        if (!usuarioEntities.isEmpty())
-            return usuarioEntities;
-        else return null;
+        return (!usuarioEntities.isEmpty()) ? null : usuarioEntities;
     }
 }
