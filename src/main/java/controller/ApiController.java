@@ -1,17 +1,16 @@
 package controller;
 
-import dao.AnuncioDAO;
-import dao.DeslikeDAO;
-import dao.LikeDAO;
-import dao.UsuarioDAO;
+import dao.*;
 import repository.AnuncioRepository;
 import repository.AvaliacaoAnuncioRepository;
+import repository.ComentarioRepository;
 import repository.UsuarioRepository;
 import service.anuncio.AnuncioService;
 import service.anuncio.ComentarioService;
 import service.anuncio.FeedBackService;
 import io.javalin.Javalin;
 import service.mapper.AnuncioMapper;
+import service.mapper.ComentarioMapper;
 import service.mapper.UsuarioMapper;
 import service.usuario.*;
 
@@ -37,6 +36,11 @@ public class ApiController {
         DeslikeDAO deslikeDAO = new DeslikeDAO();
         AnuncioDAO anuncioDAO = new AnuncioDAO(likeDAO, deslikeDAO);
         AnuncioMapper anuncioMapper = new AnuncioMapper();
+        ComentarioDAO comentarioDAO = new ComentarioDAO();
+        ComentarioMapper comentarioMapper = new ComentarioMapper();
+
+        ComentarioRepository comentarioRepository = new ComentarioRepository(comentarioDAO);
+
         AnuncioRepository anuncioRepository = new AnuncioRepository(
                 anuncioDAO,
                 likeDAO,
@@ -61,9 +65,17 @@ public class ApiController {
                 leituraService
         );
 
+        ComentarioService comentarioService = new ComentarioService(
+                comentarioMapper,
+                anuncioRepository,
+                usuarioRepository,
+                comentarioRepository
+        );
+
         AnuncioController anuncioController = new AnuncioController(
                 anuncioService,
-                feedBackService
+                feedBackService,
+                comentarioService
         );
 
         api.post("/register", usuarioController::registrar);
